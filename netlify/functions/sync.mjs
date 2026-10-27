@@ -52,7 +52,7 @@ export async function handle(req, store, now = Date.now()) {
 
 export default async (req) => {
   const { getStore } = await import("@netlify/blobs");
-  return handle(req, getStore("pinsetter-sync"));
+  return handle(req, getStore({ name: "pinsetter-sync", consistency: "strong" }));
 };
 
 export const config = { path: "/api/sync" };
