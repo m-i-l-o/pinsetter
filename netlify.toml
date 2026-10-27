@@ -1,0 +1,7 @@
+# Pinsetter: a single-page app plus one function for sync words.
+[build]
+  publish = "."
+  command = ""
+
+[functions]
+  directory = "netlify/functions"
