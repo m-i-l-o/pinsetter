@@ -1009,9 +1009,21 @@ const splitsMadeIn=g=>leavesMade(g).filter(l=>isSplit(l)).length;
 const splitsFacedIn=g=>{if(!pinTracked(g))return 0;let n=0;annotate(g.frames).forEach((r,fi)=>{if((g.pf||[]).includes(fi))return;r.forEach(o=>{if(o.fresh&&!o.clear&&isSplit(o.after))n++;});});return n;};
 const byDay=gs=>{const by={};gs.forEach(g=>{(by[isoDate(g.start)]=by[isoDate(g.start)]||[]).push(g);});return Object.values(by);};
 const nth=(gs,key,n)=>{const seen=new Set(),out=[];gs.forEach(g=>{const k=key(g);if(k&&!seen.has(k)){seen.add(k);if(seen.size===n)out.push(g);}});return out;};
+/* strikes in a row from the first ball, and in a row to the last ball (every first ball at a full rack counts) */
+const xSeq=g=>g.scoreOnly!=null?[]:annotate(g.frames).flat().filter(o=>o.fresh).map(o=>o.clear);
+const leadX=g=>{const s=xSeq(g);let n=0;while(n<s.length&&s[n])n++;return n;};
+const trailX=g=>{const s=xSeq(g);let n=0;while(n<s.length&&s[s.length-1-n])n++;return n;};
 const BADGES=[
  {id:"high",ic:"HG",name:"High Game",tiers:[200,250,300],tl:t=>t===300?"300":t+"+",desc:t=>t===300?"Roll a perfect 300.":`Score ${t} or more in a game.`,test:per((g,t)=>gameScore(g)>=t)},
  {id:"series",ic:"SR",name:"Series",tiers:[500,600,700,800],tl:t=>t,desc:t=>`Three games in a row in one day adding up to ${t} or more.`,test:(gs,t)=>seriesOf(gs).filter(x=>x.reduce((a,g)=>a+gameScore(g),0)>=t).map(x=>x[2])},
+ {id:"front9",ic:"F9",name:"Front Nine",desc:()=>"Strike in each of the first 9 frames.",test:per(g=>leadX(g)>=9)},
+ {id:"back9",ic:"B9",name:"Back Nine",desc:()=>"Finish a game with 9 strikes in a row.",test:per(g=>g.done&&trailX(g)>=9)},
+ {id:"split300",ic:"2×",name:"Two-Game 300",desc:()=>"12 strikes in a row across two games in a row, like 8 to end one game and 4 to start the next.",
+  test:gs=>byDay(gs).flatMap(d=>{d=d.slice().sort((a,b)=>a.start-b.start);const out=[];for(let i=0;i+1<d.length;i++){const t=trailX(d[i]),l=leadX(d[i+1]);if(t<12&&l<12&&t+l>=12)out.push(d[i+1]);}return out;})},
+ {id:"tenth",ic:"10",name:"Ten in the Tenth",tiers:["any","X--","-/-"],tl:t=>t==="any"?"exactly 10":t,
+  desc:t=>t==="any"?"Knock down exactly 10 pins in the 10th frame.":t==="X--"?"Strike, then two misses in the 10th (X--).":"Miss, spare all ten, then miss in the 10th (-/-).",
+  test:per((g,t)=>{if(g.scoreOnly!=null)return false;const a=annotate(g.frames)[9];if(!a||a.length!==3)return false;const c=a.map(o=>o.count);
+    return t==="any"?c[0]+c[1]+c[2]===10:t==="X--"?c[0]===10&&c[1]===0&&c[2]===0:c[0]===0&&c[1]===10&&c[2]===0;})},
  {id:"dutch",ic:"X/",name:"Dutch Treat",desc:()=>"Alternate strike and spare every frame for a Dutch 200.",test:per(g=>isDutch(g))},
  {id:"porno",ic:"10th",name:"Porno",desc:()=>"Three strikes in the 10th frame.",test:per(g=>{const a9=g.scoreOnly==null&&annotate(g.frames)[9];return !!(a9&&a9.length===3&&a9.every(o=>o.clear&&o.fresh));})},
  {id:"hot",ic:"XXX",name:"Hot Start",tiers:[3,4,5],tl:t=>t+" X",desc:t=>`Open a game with ${t} strikes in a row.`,test:per((g,t)=>openStrikes(g)>=t)},
