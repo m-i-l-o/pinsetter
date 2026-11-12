@@ -318,9 +318,41 @@ rect.tpt.on{opacity:1;stroke:var(--ink);stroke-width:2}
 .medal{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-num);font-weight:700;font-size:14px;letter-spacing:-.02em;
   background:radial-gradient(circle at 35% 30%,#FFE8A3,#E0A82E 70%);color:#3A2600;box-shadow:inset 0 0 0 3px rgba(255,255,255,.45),0 2px 4px rgba(0,0,0,.15)}
 .bcard.locked{opacity:.55;border-style:dashed}
+.lenwrap{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
+@media (min-width:860px){.lenwrap{grid-template-columns:minmax(0,1.6fr) minmax(220px,1fr)}}
+.lenrow{display:grid;grid-template-columns:minmax(0,8.6em) minmax(0,1fr) 3.4em;gap:8px;align-items:center;width:100%;background:none;border:1px solid transparent;border-radius:8px;padding:5px 6px;color:var(--ink);font:inherit;font-size:13px;text-align:left;cursor:pointer}
+.lenrow.on{border-color:var(--accent);background:var(--surface-2)}.lenrow b{text-align:right}
+.lenbar{position:relative;height:8px;background:var(--surface-2);border-radius:4px}.lenbar::after{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--muted)}
+.lenbar i{position:absolute;top:0;bottom:0;background:var(--accent);border-radius:4px;opacity:.85}
+.lfwrap{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
+@media (min-width:560px){.lfwrap{grid-template-columns:minmax(200px,240px) minmax(0,1fr)}}
+.lfdeck{position:relative;width:100%;max-width:260px;aspect-ratio:1.55;margin:0 auto;background:var(--surface-2);border:1px solid var(--line);border-radius:12px}
+.lfdeck button{position:absolute;width:16%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-weight:700;font-size:14px;cursor:pointer;padding:0}
+.lfdeck button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.lfseg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}.lfseg button{padding-inline:2px;font-size:13px}
+.lfres{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.lfres div{display:flex;flex-direction:column;background:var(--surface-2);border-radius:10px;padding:6px 8px;min-width:0}
+.lfres b{font-size:20px}.lfres span{font-size:11px;color:var(--muted)}
+.lfhits{display:flex;flex-direction:column;gap:2px;font-size:13px;max-height:180px;overflow:auto}.lfhits div{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 8px;border-bottom:1px solid var(--line);padding-block:3px}.lfhits b{margin-left:auto;text-align:right}
+#cg-s,#cg-c{accent-color:var(--accent);width:100%}
+button.chip.lfpick{cursor:pointer;border:1px solid var(--line)}
 .medal.bronze{background:radial-gradient(circle at 35% 30%,#F3C9A0,#B8733A 70%);color:#3A1E06}
 .medal.silver{background:radial-gradient(circle at 35% 30%,#FFFFFF,#A9B1BC 70%);color:#2A3038}
 .medal.plat{background:radial-gradient(circle at 35% 30%,#E9FBFF,#7FC6D8 55%,#5A8FB8);color:#0E2A3A}
+.medal.diamond{position:relative;isolation:isolate;color:#fff;text-shadow:0 1px 2px rgba(20,0,60,.75);
+  background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.95) 0 9%,rgba(255,255,255,0) 30%),
+    repeating-conic-gradient(from 11deg,rgba(255,255,255,.38) 0 22.5deg,rgba(40,0,90,.12) 22.5deg 45deg),
+    linear-gradient(135deg,#9FF3FF,#7C8CFF 45%,#E79BFF 75%,#FFD1F0);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.85),0 0 0 2px #fff,0 0 14px 3px rgba(150,120,255,.75),0 0 26px 6px rgba(120,230,255,.35)}
+.medal.diamond::before{content:"";position:absolute;inset:-5px;border-radius:50%;z-index:-1;
+  background:conic-gradient(#FF6FD8,#FFE36F,#7CFFB0,#6FE7FF,#8C7CFF,#FF6FD8);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3.5px));animation:diaspin 4s linear infinite}
+.medal.diamond::after{content:"";position:absolute;top:-6px;right:-5px;width:15px;height:15px;
+  background:radial-gradient(circle,#fff 0 18%,transparent 20%),conic-gradient(from 45deg,transparent 0 40deg,#fff 45deg,transparent 50deg 130deg,#fff 135deg,transparent 140deg 220deg,#fff 225deg,transparent 230deg 310deg,#fff 315deg,transparent 320deg);
+  filter:drop-shadow(0 0 3px #fff);animation:diatwinkle 1.8s ease-in-out infinite}
+@keyframes diaspin{to{transform:rotate(1turn)}}
+@keyframes diatwinkle{0%,100%{transform:scale(.55) rotate(0);opacity:.6}50%{transform:scale(1.1) rotate(45deg);opacity:1}}
+@media (prefers-reduced-motion:reduce){.medal.diamond::before,.medal.diamond::after{animation:none}}
+.bcard.dia{border:1.5px solid transparent;background:linear-gradient(var(--surface-2),var(--surface-2)) padding-box,linear-gradient(120deg,#FF6FD8,#6FE7FF,#8C7CFF) border-box}
+.bcard.dia .tierno{background:linear-gradient(90deg,#C04BD8,#3F8CFF);-webkit-background-clip:text;background-clip:text;color:transparent}
 .bcard .bd b.nx{display:inline;font-size:12px;color:var(--ink)}
 .tierno{font-family:var(--f-num);font-size:12px;color:var(--muted);font-weight:700}
 .tiers{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
@@ -751,7 +783,7 @@ function scorecard(frames,curFi,pl,bk){
 /* ---------- stats ---------- */
 function computeStats(games){
   const st={games:games.length,scores:games.map(g=>gameScore(g)),first:0,firstN:0,strikes:0,strikeOpp:0,spares:0,spareOpp:0,
-    opens:0,frames:0,splits:0,splitsMade:0,singles:0,singlesMade:0,leaves:{},clean:0,over200:0,turkeys:0,bestRun:0,lanes:{},brooklyn:0,scoreOnly:0,pinLeft:Array(11).fill(0),leaveN:0,byPins:{},frameStrike:Array.from({length:10},()=>({n:0,s:0})),dutch:0,runs:{},gutters:0,mostStrikes:0,mostSpares:0};
+    opens:0,frames:0,splits:0,splitsMade:0,singles:0,singlesMade:0,leaves:{},clean:0,over200:0,turkeys:0,bestRun:0,lanes:{},brooklyn:0,scoreOnly:0,pinLeft:Array(11).fill(0),byN:{},leaveN:0,byPins:{},frameStrike:Array.from({length:10},()=>({n:0,s:0})),dutch:0,runs:{},gutters:0,mostStrikes:0,mostSpares:0};
   games.forEach(g=>{
     const ann=annotate(g.frames);let run=0,open=false,gs=0,gp=0;const s=gameScore(g);
     const endRun=()=>{if(run>=3)st.runs[run]=(st.runs[run]||0)+1;run=0;};
@@ -778,7 +810,7 @@ function computeStats(games){
         st.spareOpp++;if(made)st.spares++;
         if(g.pinless||(g.pf||[]).includes(fi))return;
         st.leaveN++;o.after.forEach(p=>st.pinLeft[p]++);
-        const bk=li.split?"split":o.after.length>=4?"4":String(o.after.length);const bp=st.byPins[bk]=st.byPins[bk]||{n:0,made:0};bp.n++;if(made)bp.made++;
+        const bk=li.split?"split":o.after.length>=4?"4":String(o.after.length);const bp=st.byPins[bk]=st.byPins[bk]||{n:0,made:0};bp.n++;if(made)bp.made++;if(!li.split){const bn=st.byN[o.after.length]=st.byN[o.after.length]||{n:0,made:0};bn.n++;if(made)bn.made++;}
         if(li.split){st.splits++;if(made)st.splitsMade++;}
         if(o.after.length===1){st.singles++;if(made)st.singlesMade++;}
         const e=st.leaves[li.key]=st.leaves[li.key]||{pins:o.after,n:0,made:0,li,last:0};e.n++;if(made)e.made++;if(g.start>e.last)e.last=g.start;
@@ -803,6 +835,41 @@ function distChart(games){
   const bars=bins.map((b,i)=>{const x=pl+i*bw;return `<rect class="tpt" data-tip="${b.n} game${b.n===1?"":"s"}|${b.x}–${b.x+w-1}" x="${x+2}" y="${Y(b.n)}" width="${Math.max(1,bw-4)}" height="${H-pb-Y(b.n)}" rx="3" fill="var(--accent)" opacity="${b.n?0.85:0}"><title>${b.x}–${b.x+w-1}: ${b.n} game${b.n===1?"":"s"}</title></rect>${b.n?`<text x="${x+bw/2}" y="${Y(b.n)-4}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink)" font-family="Barlow Condensed, sans-serif">${b.n}</text>`:""}${i%every===0?`<text x="${x+bw/2}" y="${H-pb+15}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Barlow Condensed, sans-serif">${b.x}</text>`:""}`;}).join("");
   return `<div class="tchart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="How your scores are spread out. Tap a bar for the count.">${grid}${bars}<line x1="${ax}" x2="${ax}" y1="${pt-6}" y2="${H-pb}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="4 3"/><text x="${Math.min(W-pr-4,ax+4)}" y="${pt-8}" text-anchor="${ax>W-90?"end":"start"}" font-size="11" font-weight="700" fill="var(--ink)" font-family="Barlow Condensed, sans-serif">avg ${fx(avg)}</text><text x="${(W)/2}" y="${H-4}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Barlow Condensed, sans-serif">score (${w}-pin groups)</text></svg><div class="ttip" hidden></div></div>
   <p class="muted" style="margin:0;font-size:13px">Most of your games land between ${(()=>{const s=ys.slice().sort((a,b)=>a-b),q=f=>s[Math.min(s.length-1,Math.floor(f*(s.length-1)+.5))];return q(.25)+" and "+q(.75);})()}. Lowest ${lo}, highest ${hi}.</p>`;
+}
+/* game length (first ball to last ball) against other stats */
+const LEN_METRICS=[["score","Score",""],["strike","Strike rate","%"],["spare","Spare rate","%"],["opens","Open frames",""],["first","First-ball pins",""],["splits","Splits left",""],["gno","Game of the day",""]];
+function pearson(xs,ys){const n=xs.length;if(n<3)return null;const mx=xs.reduce((a,b)=>a+b,0)/n,my=ys.reduce((a,b)=>a+b,0)/n;let sxy=0,sxx=0,syy=0;
+  for(let i=0;i<n;i++){const dx=xs[i]-mx,dy=ys[i]-my;sxy+=dx*dy;sxx+=dx*dx;syy+=dy*dy;}return sxx&&syy?sxy/Math.sqrt(sxx*syy):null;}
+function rWord(r){const a=Math.abs(r);return a<.1?"no real link":a<.3?"a weak link":a<.5?"a moderate link":"a strong link";}
+function lengthPanel(games,pool){
+  const rows=games.filter(g=>g.done&&g.scoreOnly==null&&g.t0&&g.t1).map(g=>{const m=(g.t1-g.t0)/6e4;if(m<3||m>120)return null;const st=computeStats([g]);
+    return {g,m,score:gameScore(g),strike:st.strikeOpp?st.strikes/st.strikeOpp*100:null,spare:st.spareOpp?st.spares/st.spareOpp*100:null,opens:st.opens,first:st.firstN?st.first/st.firstN:null,splits:pinTracked(g)?st.splits:null,gno:gameOfDay(g,pool)};}).filter(Boolean);
+  const head=`<div class="eyebrow">Game length</div>`;
+  if(rows.length<5)return `<div class="panel stack">${head}<p class="muted" style="margin:0">Bowl ${5-rows.length} more timed game${5-rows.length===1?"":"s"} to see if game length goes with your other stats. A game is timed from your first ball to your last, when you enter it ball by ball.</p></div>`;
+  const avgM=rows.reduce((a,r)=>a+r.m,0)/rows.length;
+  const corr=LEN_METRICS.map(([k,l,u])=>{const rs=rows.filter(r=>r[k]!=null);return {k,l,u,n:rs.length,r:pearson(rs.map(r=>r.m),rs.map(r=>r[k]))};});
+  const key=S.lenM||"score",cur=corr.find(c=>c.k===key)||corr[0],pts=rows.filter(r=>r[cur.k]!=null);
+  const W=380,H=230,pl=40,pr=10,pt=12,pb=28,xs=pts.map(r=>r.m),ys=pts.map(r=>r[cur.k]);
+  let x0=Math.floor(Math.min(...xs)),x1=Math.ceil(Math.max(...xs));if(x1-x0<4){x0=Math.max(0,x0-2);x1=x0+6;}
+  let y0=Math.min(...ys),y1=Math.max(...ys);const span=y1-y0||1;y0=Math.max(0,Math.floor(y0-span*.08));y1=Math.ceil(y1+span*.08);if(y1===y0)y1=y0+1;
+  const X=v=>pl+(v-x0)*(W-pl-pr)/(x1-x0),Y=v=>pt+(y1-v)*(H-pt-pb)/(y1-y0);
+  const nice=(a,b,n)=>{const raw=(b-a)/n,mag=Math.pow(10,Math.floor(Math.log10(raw))),st=[1,2,2.5,5,10].map(f=>f*mag).find(f=>f>=raw);const out=[];for(let v=Math.ceil(a/st)*st;v<=b+1e-9;v+=st)out.push(+v.toFixed(2));return out;};
+  const ff="Barlow Condensed, sans-serif";
+  let grid=nice(y0,y1,4).map(v=>`<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${pl-6}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="${ff}">${v}${cur.u}</text>`).join("");
+  grid+=nice(x0,x1,4).map(v=>`<text x="${X(v)}" y="${H-12}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="${ff}">${v}m</text>`).join("");
+  let fit="";if(cur.r!=null){const mx=xs.reduce((a,b)=>a+b,0)/xs.length,my=ys.reduce((a,b)=>a+b,0)/ys.length;let sxy=0,sxx=0;xs.forEach((x,i)=>{sxy+=(x-mx)*(ys[i]-my);sxx+=(x-mx)*(x-mx);});const b=sxx?sxy/sxx:0,a=my-b*mx;
+    const cy=v=>Math.min(y1,Math.max(y0,v));fit=`<line x1="${X(x0)}" y1="${Y(cy(a+b*x0))}" x2="${X(x1)}" y2="${Y(cy(a+b*x1))}" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 5" stroke-linecap="round"/>`;}
+  const fmtV=(v,u)=>(u==="%"||!Number.isInteger(v)?fx(v):v)+u;
+  const dots=pts.map(r=>`<g class="tpt" data-tip="${esc(fmtV(r[cur.k],cur.u)+" "+cur.l.toLowerCase()+" · "+Math.round(r.m)+" min|"+new Date(r.g.start).toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"})+" · Game "+r.gno)}"><circle cx="${X(r.m)}" cy="${Y(r[cur.k])}" r="13" fill="transparent"/><circle class="tdot" cx="${X(r.m)}" cy="${Y(r[cur.k])}" r="4" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.4"/></g>`).join("");
+  const PH={score:["higher scores","lower scores"],strike:["a higher strike rate","a lower strike rate"],spare:["a higher spare rate","a lower spare rate"],opens:["more open frames","fewer open frames"],first:["more first-ball pins","fewer first-ball pins"],splits:["more splits","fewer splits"]};
+  const say=c=>c.r==null?"not enough games yet":rWord(c.r)+(Math.abs(c.r)<.1?"":c.k==="gno"?`. Your ${c.r>0?"later":"earlier"} games of the day tend to run longer`:`. Longer games tend to have ${PH[c.k][c.r>0?0:1]}`);
+  const sorted=corr.filter(c=>c.r!=null).sort((a,b)=>Math.abs(b.r)-Math.abs(a.r));
+  const bars=corr.map(c=>`<button class="lenrow${c.k===cur.k?" on":""}" data-act="len-m" data-m="${c.k}" aria-pressed="${c.k===cur.k}"><span>${esc(c.l)}</span><span class="lenbar" aria-hidden="true"><i style="${c.r==null?"width:0":(c.r>=0?"left:50%;":"right:50%;")+"width:"+(Math.abs(c.r)*50).toFixed(1)+"%"}" class="${c.r!=null&&c.r<0?"neg":""}"></i></span><b class="num">${c.r==null?"—":(c.r>0?"+":"")+c.r.toFixed(2)}</b></button>`).join("");
+  return `<div class="panel stack">${head}
+    <p style="margin:0">Your games take <b>${Math.round(avgM)} minutes</b> on average (${rows.length} timed games). ${sorted.length&&Math.abs(sorted[0].r)>=.3?`The clearest link is with <b>${esc(sorted[0].l.toLowerCase())}</b>: ${esc(say(sorted[0]))}.`:"So far game length doesn't line up strongly with any of your stats."}</p>
+    <div class="lenwrap"><div class="tchart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Game length in minutes against ${esc(cur.l)}. Tap a dot to see the game.">${grid}${fit}${dots}</svg><div class="ttip" hidden></div></div>
+      <div class="stack" style="gap:4px;min-width:0"><div class="muted" style="font-size:12px;display:flex;justify-content:space-between"><span>Tap a stat to chart it</span><span>link (r)</span></div>${bars}</div></div>
+    <p class="muted" style="margin:0;font-size:13px"><b>${esc(cur.l)}:</b> ${esc(say(cur))}${cur.r!=null?` (r = ${cur.r.toFixed(2)}, ${cur.n} games)`:""}. r runs from −1 to +1; near 0 means length and that stat don't move together. A link isn't proof one causes the other: busy nights can make games slower and harder at the same time.</p></div>`;
 }
 function trendChart(games){
   if(games.length<2) return `<p class="muted">Bowl two or more games to see your trend.</p>`;
@@ -838,7 +905,7 @@ function bowlView(){
     const showOver=last&&S.callout&&S.callout.over===last.id;
     let h="";
     if(showOver){
-      h+=`<div class="panel stack"><div class="callout">${last.scoreOnly!=null?"SAVED":"GAME OVER"} · ${gameScore(last)}</div>${isDutch(last)?`<div class="callout lastcall">DUTCH 200!</div><div class="lvname" style="justify-content:center"><span class="muted">Strike, spare, strike, spare, all game long</span></div>`:""}${S.callout.last&&!isDutch(last)?`<div class="callout lastcall">${esc(S.callout.last.text)}</div>${S.callout.last.sub?`<div class="lvname" style="justify-content:center">${S.callout.last.sub}</div>`:""}`:""}${S.callout.strikeKey?`<div class="row" style="justify-content:center"><span class="muted">Last ball:</span>${strikeType(last,S.callout.strikeKey)}</div>`:""}${card(last,-1)}<p class="muted" style="margin:0;text-align:center">${esc(gameNote(last))}</p>${metaFields(last)}<button class="btn sm" data-act="edit" data-id="${last.id}" style="align-self:center">Add notes or edit this game</button></div>`;
+      h+=`<div class="panel stack"><div class="callout">${last.scoreOnly!=null?"SAVED":"GAME OVER"} · ${gameScore(last)}</div>${isDutch(last)?`<div class="callout lastcall">DUTCH 200!</div><div class="lvname" style="justify-content:center"><span class="muted">Strike, spare, strike, spare, all game long</span></div>`:""}${S.callout.last&&!isDutch(last)?`<div class="callout lastcall">${esc(S.callout.last.text)}</div>${S.callout.last.sub?`<div class="lvname" style="justify-content:center">${S.callout.last.sub}</div>`:""}`:""}${S.callout.strikeKey?`<div class="row" style="justify-content:center"><span class="muted">Last ball:</span>${strikeType(last,S.callout.strikeKey)}</div>`:""}${card(last,-1)}<p class="muted" style="margin:0;text-align:center">${esc(gameNote(last))}</p>${leavesLine(last)}${metaFields(last)}<button class="btn sm" data-act="edit" data-id="${last.id}" style="align-self:center">Add notes or edit this game</button></div>`;
     }
     const md=S.newMode||S.set.entry||"pins";
     const modes=[["pins","Tap pins"],["counts","Pin counts"],["score","Final score"]].map(([k,l])=>`<button data-act="newmode" data-m="${k}" aria-pressed="${md===k}">${l}</button>`).join("");
@@ -879,16 +946,17 @@ function bowlView(){
     return `<button class="pin${gone?" gone":down?" down":""}" style="left:${left}%;top:${top}%" data-act="pin" data-pin="${p}" ${gone?'disabled aria-hidden="true" tabindex="-1"':`aria-pressed="${down}" aria-label="Pin ${p}${down?", knocked down":", standing"}"`}>${p}</button>`;}).join("");
   const allLabel=ns.fresh?"Strike":"Spare";
   const conf=S.confirm==="discard";
-  if(g.pinless){
+  const cnow=countNow(g,ns),lockCount=!g.pinless&&(g.pf||[]).includes(ns.fi)&&ns.ri>0;
+  if(cnow){
     if(!(S.callout))leaveHtml=`<div class="eyebrow">Frame ${ns.fi+1} · Ball ${ns.ri+1}</div><div class="lv">${ns.standing.length} standing</div><div class="muted">Tap how many pins went down.</div>`;
     const keys=[];for(let n=0;n<=ns.standing.length;n++){const full=n===ns.standing.length;keys.push(`<button class="btn big key${full?" xbtn":""}" data-act="count" data-n="${n}" aria-label="${full?allLabel:n+" pins"}">${full?(ns.fresh?"X":"/"):n===0?"–":n}</button>`);}
     entryHtml=`<div class="panel stack"><div class="eyebrow">Pins down</div><div class="keypad">${keys.join("")}</div></div>`;
-    ctrlHtml=`<div class="ctrl3" style="grid-template-columns:1fr 1fr"><button class="btn" data-act="undo" ${g.frames.length?"":"disabled"}>↶ Undo ball</button><button class="btn" data-act="redo" ${redoCount(g)?"":"disabled"}>↷ Redo ball${redoCount(g)>1?" ("+redoCount(g)+")":""}</button></div><div class="kbd">On a keyboard: type 0–9 for pins down, X for a strike or spare, Backspace undoes.</div>`;
+    ctrlHtml=(g.pinless?"":`<div class="banner" style="margin:0">Counting pins for now. Leaves and splits aren't tracked for these frames.</div><button class="btn" data-act="cmode" data-on="0" ${lockCount?"disabled":""}>Back to tapping pins${lockCount?" after this frame":""}</button>`)+`<div class="ctrl3" style="grid-template-columns:1fr 1fr"><button class="btn" data-act="undo" ${g.frames.length?"":"disabled"}>↶ Undo ball</button><button class="btn" data-act="redo" ${redoCount(g)?"":"disabled"}>↷ Redo ball${redoCount(g)>1?" ("+redoCount(g)+")":""}</button></div><div class="kbd">On a keyboard: type 0–9 for pins down, X for a strike or spare, Backspace undoes.</div>`;
   }
   return `<div class="panel stack">${g.pinless?'<span class="chip" style="align-self:flex-start">Pin counts only</span>':""}
     <div class="livebar"><div class="stat"><span class="eyebrow">Score</span><span class="big">${cur}</span></div>
       <div class="grow"></div><div class="row" style="gap:6px">${g.lane?`<span class="chip">Lane ${esc(g.lane)}</span>`:""}<span class="chip red">Frame ${ns.fi+1} · Ball ${ns.ri+1}</span></div></div>
-    ${scorecard(g.frames,ns.fi,g.pinless,g.brooklyn)}
+    ${scorecard(g.frames,ns.fi,g.pinless?true:(g.pf||[]),g.brooklyn)}
     ${S.set.proj?`<div class="proj">
       <div class="pj best"><span class="eyebrow">Highest possible</span><span class="v">${mx}</span><span class="s">if you strike out from here</span></div>
       <div class="pj"><span class="eyebrow">On pace for</span><span class="v">${pace!=null?pace:"—"}</span><span class="s">${scored?`keeping this game's ${fx(cur/scored)} per frame`:"after your first scored frame"}</span></div>
@@ -906,11 +974,20 @@ function bowlView(){
         <button class="btn" data-act="undo" ${g.frames.length?"":"disabled"}>↶ Undo ball</button>
         <button class="btn" data-act="redo" ${redoCount(g)?"":"disabled"}>↷ Redo ball${redoCount(g)>1?" ("+redoCount(g)+")":""}</button></div>
       </div>
+      <button class="btn ghost sm" data-act="cmode" data-on="1" style="align-self:flex-start">Not sure which pins? Enter the count instead</button>
       <div class="kbd">On a keyboard: 1–9 and 0 (pin 10) toggle pins, Enter records, X marks strike or spare, Backspace undoes, Shift+Backspace redoes.</div>`}
       ${conf?`<div class="row"><span>Delete this game?</span><button class="btn sm danger" data-act="discard-yes">Delete</button><button class="btn sm" data-act="confirm-no">Keep</button></div>`:`<button class="btn ghost sm danger" data-act="discard" style="align-self:flex-start">Discard game</button>`}
     </div>
   </div>`;
 }
+const FIT_KEYS=["2-3","4-5","5-6","7-8","9-10","8-9"];
+/* every split or named leave in a game, with its name */
+function leavesLine(g){if(!pinTracked(g))return "";const out=[];
+  annotate(g.frames).forEach((r,fi)=>{if((g.pf||[]).includes(fi))return;r.forEach((o,i)=>{if(!o.fresh||o.clear||!o.after.length)return;
+    const k=leaveKey(o.after),nm=NAMES[k]||"",sp=isSplit(o.after),fit=FIT_KEYS.includes(k);if(!nm&&!sp&&!fit)return;
+    const made=!!(r[i+1]&&r[i+1].clear);let e=out.find(x=>x.k===k);if(!e)out.push(e={k,nm,sp,fit,fr:[],made:0});e.fr.push(fi+1);if(made)e.made++;});});
+  const chips=out.map(e=>`<span class="chip${e.sp||e.fit?" red":""}" title="Frame ${e.fr.join(", ")}">${esc(e.nm?e.nm+" ("+e.k+")":e.k)}${e.sp?" split":e.fit?" fit split":""} · ${e.fr.length>1?"×"+e.fr.length:"F"+e.fr[0]}${e.made?(e.fr.length>1?" · "+e.made+" made":" ✓"):""}</span>`);
+  return chips.length?`<div class="row" style="gap:6px;flex-wrap:wrap;justify-content:inherit">${chips.join("")}</div>`:"";}
 function gameNote(g){
   if(g.scoreOnly!=null)return "Final score only";
   const st=computeStats([g]);const bits=[];
@@ -963,6 +1040,65 @@ function perfectText(rate){
   const when=!Number.isFinite(games)?"":games<=gpw?"About once a week at your pace.":yrs<1?`About every ${Math.max(1,Math.round(games/gpw))} weeks at your pace (${fx(gpw,0)} games a week).`:`About every ${bigNum(yrs)} year${yrs>=1.5?"s":""} at your pace (${fx(gpw,0)} games a week).`;
   return {games:bigNum(games),chance:p>0?(Math.pow(p,12)*100):0,when};
 }
+/* clean game: every frame a mark. Chance of a mark = strike rate + (miss strike) x spare rate, so a clean game is that to the 10th */
+const markP=(s,c)=>s+(1-s)*c;
+function cleanChance(st){if(!st.strikeOpp||!st.spareOpp)return null;return Math.pow(markP(st.strikes/st.strikeOpp,st.spares/st.spareOpp),10);}
+function oneIn(n){if(!Number.isFinite(n))return "∞";if(n<10)return (+n.toFixed(1)).toString();if(n<1e6)return Math.round(n).toLocaleString();return bigNum(n);}
+function cleanText(s,c){const m=markP(s/100,c/100),g=Math.pow(m,10),ser=Math.pow(m,30);
+  return {mark:m*100,game:g,series:ser,games:g>0?oneIn(1/g):"∞",sgames:ser>0?oneIn(1/ser):"∞"};}
+function cleanPanel(st,games){
+  const ys=st.strikeOpp?st.strikes/st.strikeOpp*100:null,yc=st.spareOpp?st.spares/st.spareOpp*100:null;
+  if(ys==null||yc==null)return `<div class="panel stack"><div class="eyebrow">Clean game odds</div><p class="muted" style="margin:0">Bowl a game with pins or pin counts and your odds of a clean game show up here.</p></div>`;
+  const cs=S.cg?S.cg.s:Math.round(ys),cc=S.cg?S.cg.c:Math.round(yc),t=cleanText(cs,cc),mine=cleanText(ys,yc);
+  const played=games.filter(g=>g.scoreOnly==null&&g.done).length,exp=played*mine.game;
+  const up=(ds,dc)=>chanceStr(cleanText(Math.min(100,ys+ds),Math.min(100,yc+dc)).game*100);
+  return `<div class="panel stack"><div class="eyebrow">Clean game odds</div>
+    <div class="p3-big"><span class="num" id="cg-pct">${chanceStr(t.game*100)}</span><span> per game</span></div>
+    <p style="margin:0">That's about <b id="cg-games">1 in ${t.games}</b> games with no open frames, at a <b id="cg-sv">${cs}%</b> strike rate and <b id="cg-cv">${cc}%</b> spare rate. You mark <span id="cg-mark">${fx(t.mark)}</span>% of frames, and a whole 3-game clean series is <span id="cg-ser">1 in ${t.sgames}</span>.</p>
+    <div class="row" style="justify-content:space-between;gap:6px"><label for="cg-s" style="font-weight:600;font-size:13px;color:var(--muted)">Strike rate</label><span class="muted" style="font-size:13px">Yours: ${fx(ys)}%</span></div>
+    <input type="range" id="cg-s" min="0" max="100" step="1" value="${cs}">
+    <div class="row" style="justify-content:space-between;gap:6px"><label for="cg-c" style="font-weight:600;font-size:13px;color:var(--muted)">Spare rate</label><span class="muted" style="font-size:13px">Yours: ${fx(yc)}%</span></div>
+    <input type="range" id="cg-c" min="0" max="100" step="1" value="${cc}">
+    <div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn sm" data-act="cg-mine">Reset to mine</button></div>
+    <p class="muted" style="margin:0;font-size:13px">At your real rates: ${chanceStr(mine.game*100)} a game. ${played?`In ${played} game${played===1?"":"s"} the math expects ${exp<10?(+exp.toFixed(2)).toString():fx(exp)} clean game${Math.abs(exp-1)<.05?"":"s"}; you've bowled ${st.clean}.`:""} Raising spares 5 points makes it ${up(0,5)}; raising strikes 5 points makes it ${up(5,0)}.</p>
+    <p class="muted" style="margin:0;font-size:12px">A frame is a mark if you strike, or miss the strike and make the spare. A clean game is 10 marks in a row, so the chance is your mark rate to the 10th power. Assumes every frame is independent.</p></div>`;
+}
+function updateClean(){const q=id=>document.getElementById(id);if(!q("cg-s"))return;const s=+q("cg-s").value,c=+q("cg-c").value;S.cg={s,c};const t=cleanText(s,c);
+  q("cg-pct").textContent=chanceStr(t.game*100);q("cg-games").textContent="1 in "+t.games;q("cg-sv").textContent=s+"%";q("cg-cv").textContent=c+"%";q("cg-mark").textContent=fx(t.mark);q("cg-ser").textContent="1 in "+t.sgames;}
+/* leave finder: how often a leave came up in a session or date range */
+function lfRange(all){const L=S.lf;const now=Date.now(),day=864e5;
+  if(L.range==="session"){if(!all.length)return {gs:[],label:"Last session"};const d=isoDate(all[all.length-1].start);return {gs:all.filter(g=>isoDate(g.start)===d),label:"Last session · "+new Date(all[all.length-1].start).toLocaleDateString(undefined,{month:"short",day:"numeric"})};}
+  if(L.range==="games"){const n=Math.max(1,Math.round(+L.n||10));return {gs:all.slice(-n),label:"Last "+n+" game"+(n===1?"":"s")};}
+  if(L.range==="custom"){const f=L.from||"0000",t=L.to||"9999";return {gs:all.filter(g=>{const d=isoDate(g.start);return d>=f&&d<=t;}),label:(L.from||"start")+" to "+(L.to||"today")};}
+  return {gs:all,label:"All games"};}
+function leaveFinder(all,pool){
+  const L=S.lf=S.lf||{pins:[],mode:"exact",range:"session",from:"",to:"",n:10};if(L.range==="7"||L.range==="30")L.range="games";if(!L.n)L.n=10;
+  const {gs,label}=lfRange(all),sel=L.pins.slice().sort((a,b)=>a-b),selKey=sel.join("-");
+  let chances=0,n=0,made=0;const tally={},hits=[],tracked=gs.filter(pinTracked);
+  tracked.forEach(g=>{const fr=[];annotate(g.frames).forEach((r,fi)=>{if((g.pf||[]).includes(fi))return;r.forEach((o,i)=>{if(!o.fresh||o.clear||!o.after.length)return;chances++;const k=leaveKey(o.after);
+      (tally[k]=tally[k]||{k,pins:o.after,n:0,made:0}).n++;const mk=!!(r[i+1]&&r[i+1].clear);if(mk)tally[k].made++;
+      if(sel.length&&(L.mode==="exact"?k===selKey:sel.every(p=>o.after.includes(p)))){n++;if(mk)made++;fr.push((mk?"✓ ":"")+"F"+(fi+1));}});});
+    if(fr.length)hits.push({g,fr});});
+  const top=Object.values(tally).sort((a,b)=>b.n-a.n).slice(0,8);
+  const deck=ALL.map(p=>{const [x,y]=XY[p];return `<button data-act="lf-pin" data-pin="${p}" aria-pressed="${sel.includes(p)}" style="left:${(9+x*82/6).toFixed(1)}%;top:${(12+y*76/3).toFixed(1)}%" aria-label="Pin ${p}">${p}</button>`;}).join("");
+  const rangeBtns=[["session","Last session"],["games","Last games"],["all","All"],["custom","Dates"]].map(([r,l])=>`<button data-act="lf-range" data-r="${r}" aria-pressed="${L.range===r}">${l}</button>`).join("");
+  const li=sel.length?leaveInfo(sel):null,what=sel.length?(L.mode==="exact"?`the ${esc(li.label)}${NAMES[selKey]?" ("+esc(NAMES[selKey])+")":""}`:`pin${sel.length>1?"s":""} ${esc(selKey.replace(/-/g,", "))} standing`):"";
+  const res=!sel.length?`<p class="muted" style="margin:0">Tap pins to pick a leave, or tap one of the common leaves below.</p>`
+    :`<div class="lfres"><div><b class="num">${n}</b><span>time${n===1?"":"s"}</span></div><div><b class="num">${pf(n,chances)}%</b><span>of first balls</span></div><div><b class="num">${tracked.length?fx(n/tracked.length):"0"}</b><span>per game</span></div><div><b class="num">${n?pf(made,n)+"%":"—"}</b><span>made${n?` (${made}/${n})`:""}</span></div></div>
+      <p style="margin:0">You left ${what} ${n} time${n===1?"":"s"} in ${tracked.length} game${tracked.length===1?"":"s"} (${chances} first balls that left pins).</p>
+      ${hits.length?`<div class="lfhits">${hits.slice().reverse().slice(0,30).map(h=>`<div><span class="muted">${new Date(h.g.start).toLocaleDateString(undefined,{month:"short",day:"numeric"})} · Game ${gameOfDay(h.g,pool)}</span><b>${h.fr.join(", ")}</b></div>`).join("")}${hits.length>30?`<div class="muted">and ${hits.length-30} more games</div>`:""}</div>`:""}`;
+  return `<div class="panel stack"><div class="row" style="justify-content:space-between"><div class="eyebrow">Leave finder</div><span class="chip">${esc(label)}</span></div>
+    <div class="seg lfseg" role="group" aria-label="Time range">${rangeBtns}</div>
+    ${L.range==="games"?`<div class="row" style="gap:8px;align-items:center"><label class="muted" style="font-size:13px" for="lf-n">Last</label><input type="number" id="lf-n" min="1" max="999" inputmode="numeric" value="${L.n}" style="width:5.5em"><span class="muted" style="font-size:13px">games</span>${[5,10,20,50].map(n=>`<button class="chip lfpick${+L.n===n?" red":""}" data-act="lf-n" data-n="${n}">${n}</button>`).join("")}</div>`:""}
+    ${L.range==="custom"?`<div class="row" style="gap:8px;flex-wrap:wrap"><label class="muted" style="font-size:13px">From <input type="date" id="lf-from" value="${esc(L.from||"")}"></label><label class="muted" style="font-size:13px">To <input type="date" id="lf-to" value="${esc(L.to||"")}"></label></div>`:""}
+    <div class="lfwrap"><div class="lfdeck" role="group" aria-label="Pick the pins left standing">${deck}</div>
+      <div class="stack" style="gap:8px;min-width:0">
+        <div class="seg" role="group" aria-label="Match"><button data-act="lf-mode" data-m="exact" aria-pressed="${L.mode==="exact"}">Exactly these pins</button><button data-act="lf-mode" data-m="any" aria-pressed="${L.mode==="any"}">Any leave with these</button></div>
+        ${sel.length?`<button class="btn sm ghost" data-act="lf-clear" style="align-self:flex-start">Clear pins</button>`:""}
+        ${res}</div></div>
+    ${top.length?`<div class="eyebrow" style="font-size:11px">Most common in this range</div><div class="row" style="gap:6px;flex-wrap:wrap">${top.map(e=>`<button class="chip lfpick${e.k===selKey&&L.mode==="exact"?" red":""}" data-act="lf-pick" data-k="${e.k}">${esc(e.pins.length===1?e.k+" pin":e.k)}${NAMES[e.k]?" · "+esc(NAMES[e.k]):""} <b>×${e.n}</b></button>`).join("")}</div>`
+      :`<p class="muted" style="margin:0;font-size:13px">No pin-tracked games in this range.</p>`}</div>`;
+}
 function perfectPanel(st){
   const exact=st.strikeOpp?st.strikes/st.strikeOpp*100:null,mine=exact!=null?Math.round(exact):null,val=S.p300!=null?S.p300:Math.max(1,mine!=null?mine:20),t=perfectText(val);
   const ticks=[[20,"20%"],[50,"50%"],[75,"75%"],[90,"90%"]];
@@ -983,7 +1119,7 @@ function updatePerfect(v,typed){v=+v;if(!Number.isFinite(v))return;v=typed?Math.
   S.p300=v;const t=perfectText(v),q=id=>document.getElementById(id);
   if(q("p300"))q("p300").value=Math.round(v);if(q("p3-games"))q("p3-games").textContent=t.games;if(!typed&&q("p3-rate-in"))q("p3-rate-in").value=v;if(q("p3-rate-in"))q("p3-rate-in").style.width=p3w(q("p3-rate-in").value);
   if(q("p3-when"))q("p3-when").textContent=t.when;if(q("p3-chance"))q("p3-chance").textContent=chanceStr(t.chance);}
-const STAT_CARDS=[["summary","Summary tiles",1],["milestones","Achievements",1],["trend","Score trend",1],["dist","Score distribution",1],["shot","Shot making",0],["badges","Badges",1],["leavedex","Every leave",0],["road300","Road to 300",0],
+const STAT_CARDS=[["summary","Summary tiles",1],["milestones","Achievements",1],["trend","Score trend",1],["dist","Score distribution",1],["shot","Shot making",0],["finder","Leave finder",1],["badges","Badges",1],["leavedex","Every leave",0],["road300","Road to 300",0],["cleanodds","Clean game odds",0],["length","Game length",1],
   ["leaves","Most common leaves",0],["makes","Most common makes",0],["rare","Rarest leaves",0],["heat","Pins you leave most",0],["named","Named leave collection",1],
   ["splits","Split collection",1],["bypins","Spares by pins left",0],["byframe","Strike rate by frame",0],["lane","Average by lane",0],["gameday","Average by game of the day",0]];
 function statOrder(){const ids=STAT_CARDS.map(c=>c[0]),saved=(S.set.statOrder||[]).filter(id=>ids.includes(id));return saved.concat(ids.filter(id=>!saved.includes(id)));}
@@ -1013,27 +1149,40 @@ const nth=(gs,key,n)=>{const seen=new Set(),out=[];gs.forEach(g=>{const k=key(g)
 const xSeq=g=>g.scoreOnly!=null?[]:annotate(g.frames).flat().filter(o=>o.fresh).map(o=>o.clear);
 const leadX=g=>{const s=xSeq(g);let n=0;while(n<s.length&&s[n])n++;return n;};
 const trailX=g=>{const s=xSeq(g);let n=0;while(n<s.length&&s[s.length-1-n])n++;return n;};
+const isPorno=g=>{const a9=g.scoreOnly==null&&annotate(g.frames)[9];return !!(a9&&a9.length===3&&a9.every(o=>o.clear&&o.fresh));};
+/* golf: 18 strikes in a row, carried from one game into the next (games in the order bowled; a score-only game breaks the run) */
+const golfHits=gs=>{const out=[];let run=0;gs.forEach(g=>{if(g.scoreOnly!=null){run=0;return;}xSeq(g).forEach(x=>{run=x?run+1:0;if(run===18)out.push(g);});});return out;};
 const BADGES=[
- {id:"high",ic:"HG",name:"High Game",tiers:[200,250,300],tl:t=>t===300?"300":t+"+",desc:t=>t===300?"Roll a perfect 300.":`Score ${t} or more in a game.`,test:per((g,t)=>gameScore(g)>=t)},
+ {id:"high",ic:"CLUB",name:"The Club",tiers:[100,125,150,175,200,225,250,275,300],tl:t=>t+" club",desc:t=>t===300?"300 club: roll a perfect game.":`${t} club: score ${t} or more in a game.`,test:per((g,t)=>gameScore(g)>=t)},
  {id:"series",ic:"SR",name:"Series",tiers:[500,600,700,800],tl:t=>t,desc:t=>`Three games in a row in one day adding up to ${t} or more.`,test:(gs,t)=>seriesOf(gs).filter(x=>x.reduce((a,g)=>a+gameScore(g),0)>=t).map(x=>x[2])},
- {id:"front9",ic:"F9",name:"Front Nine",desc:()=>"Strike in each of the first 9 frames.",test:per(g=>leadX(g)>=9)},
- {id:"back9",ic:"B9",name:"Back Nine",desc:()=>"Finish a game with 9 strikes in a row.",test:per(g=>g.done&&trailX(g)>=9)},
+ {id:"nines",ic:"⛳",name:"Front & Back Nine",tiers:["front","back","golf"],tl:t=>t==="front"?"front 9":t==="back"?"back 9":"golf · 18",
+  desc:t=>t==="front"?"Strike in each of the first 9 frames.":t==="back"?"Finish a game with 9 strikes in a row.":"Golf: 18 strikes in a row across games bowled back to back. They can be on different days.",
+  test:(gs,t)=>t==="front"?per(g=>leadX(g)>=9)(gs):t==="back"?per(g=>g.done&&trailX(g)>=9)(gs):golfHits(gs)},
  {id:"split300",ic:"2×",name:"Two-Game 300",desc:()=>"12 strikes in a row across two games in a row, like 8 to end one game and 4 to start the next.",
   test:gs=>byDay(gs).flatMap(d=>{d=d.slice().sort((a,b)=>a.start-b.start);const out=[];for(let i=0;i+1<d.length;i++){const t=trailX(d[i]),l=leadX(d[i+1]);if(t<12&&l<12&&t+l>=12)out.push(d[i+1]);}return out;})},
- {id:"tenth",ic:"10",name:"Ten in the Tenth",tiers:["any","X--","-/-"],tl:t=>t==="any"?"exactly 10":t,
-  desc:t=>t==="any"?"Knock down exactly 10 pins in the 10th frame.":t==="X--"?"Strike, then two misses in the 10th (X--).":"Miss, spare all ten, then miss in the 10th (-/-).",
+ {id:"tenth",ic:"10",name:"Ten in the Tenth",tiers:["any","X--","-/-"],tl:t=>t==="any"?"exactly 10":t==="X--"?"X––":"–/–",
+  desc:t=>t==="any"?"Knock down exactly 10 pins in the 10th frame.":t==="X--"?"Strike, then two misses in the 10th (X––).":"Miss, spare all ten, then miss in the 10th (–/–).",
   test:per((g,t)=>{if(g.scoreOnly!=null)return false;const a=annotate(g.frames)[9];if(!a||a.length!==3)return false;const c=a.map(o=>o.count);
     return t==="any"?c[0]+c[1]+c[2]===10:t==="X--"?c[0]===10&&c[1]===0&&c[2]===0:c[0]===0&&c[1]===10&&c[2]===0;})},
  {id:"dutch",ic:"X/",name:"Dutch Treat",desc:()=>"Alternate strike and spare every frame for a Dutch 200.",test:per(g=>isDutch(g))},
- {id:"porno",ic:"10th",name:"Porno",desc:()=>"Three strikes in the 10th frame.",test:per(g=>{const a9=g.scoreOnly==null&&annotate(g.frames)[9];return !!(a9&&a9.length===3&&a9.every(o=>o.clear&&o.fresh));})},
+ {id:"porno",ic:"10th",name:"Porno",tiers:["porno","orgy"],tl:t=>t==="porno"?"porno":"orgy",
+  desc:t=>t==="porno"?"Three strikes in the 10th frame.":"Orgy: a porno in 3 games in a row.",
+  test:(gs,t)=>{if(t==="porno")return gs.filter(isPorno);const out=[];let n=0;gs.forEach(g=>{n=isPorno(g)?n+1:0;if(n===3)out.push(g);if(n>=3)n=0;});return out;}},
  {id:"hot",ic:"XXX",name:"Hot Start",tiers:[3,4,5],tl:t=>t+" X",desc:t=>`Open a game with ${t} strikes in a row.`,test:per((g,t)=>openStrikes(g)>=t)},
  {id:"marks",ic:"M",name:"Mark Machine",tiers:[8,9,10],tl:t=>t+" marks",desc:t=>`Mark (strike or spare) in ${t} or more frames.`,test:per((g,t)=>marks(g)>=t)},
- {id:"clean",ic:"✓",name:"Clean Sheet",desc:()=>"Bowl a game with no open frames.",test:per(g=>marks(g)===10)},
+ {id:"clean",ic:"✓",name:"Clean Sheet",tiers:[1,2,3],tl:t=>t===1?"clean game":t+"× in a row",
+  desc:t=>t===1?"Bowl a game with no open frames.":`Bowl ${t} clean games in a row (no open frames in any of them).`,
+  test:(gs,t)=>{const out=[];let n=0;gs.forEach(g=>{n=marks(g)===10?n+1:0;if(n===t)out.push(g);if(n>=t&&t>1)n=0;});return out;}},
+ {id:"sixseven",ic:"67",name:"Six Seven",desc:()=>"Roll a 67, a 167 and a 267. All three.",
+  test:gs=>{const need=new Set([67,167,267]);for(const g of gs){need.delete(gameScore(g));if(!need.size)return [g];}return [];}},
  {id:"allspare",ic:"/",name:"Spare Me",desc:()=>"Every frame a spare: no strikes, no opens.",test:per(g=>{const a=frameTypes(g);return a&&a.every(t=>t==="/");})},
  {id:"comeback",ic:"↗",name:"Comeback Kid",desc:()=>"Open the first three frames, then finish with 150 or more.",test:per(g=>{const a=frameTypes(g);return a&&a[0]==="o"&&a[1]==="o"&&a[2]==="o"&&gameScore(g)>=150;})},
- {id:"nine",ic:"9",name:"Nine Alive",desc:()=>"Knock down exactly 9 on every first ball of a game.",test:per(g=>{if(g.scoreOnly!=null)return false;const a=annotate(g.frames);return a.length===10&&a.every(r=>r[0]&&r[0].count===9);})},
+ {id:"nine",ic:"9",name:"Nine Alive",tiers:["nine","ninety"],tl:t=>t==="nine"?"9 every frame":"perfect 90",
+  desc:t=>t==="nine"?"Knock down exactly 9 on every first ball of a game.":"Perfect 90: 9 then a miss in every frame, for a score of exactly 90.",
+  test:per((g,t)=>{if(g.scoreOnly!=null)return false;const a=annotate(g.frames);if(a.length!==10||!a.every(r=>r[0]&&r[0].count===9))return false;
+    return t==="nine"||(a.every(r=>r.length===2&&r[1].count===0)&&gameScore(g)===90);})},
  {id:"split",ic:"S",name:"Split Happens",tiers:[1,2,3],tl:t=>t===1?"1 split":t+" in a game",desc:t=>t===1?"Convert a split.":`Convert ${t} splits in one game.`,test:per((g,t)=>splitsMadeIn(g)>=t)},
- {id:"splitcity",ic:"SC",name:"Split City",desc:()=>"Leave 3 or more splits in one game. Ouch.",test:per(g=>splitsFacedIn(g)>=3)},
+ {id:"splitcity",ic:"SC",name:"Split City",tiers:[3,4,5,6],tl:t=>t+" splits",desc:t=>`Leave ${t} splits in one game. Ouch.`,test:per((g,t)=>splitsFacedIn(g)>=t)},
  {id:"bedposts",ic:"7·10",name:"Bedpost Buster",desc:()=>"Convert the 7-10.",test:per(g=>leavesMade(g).some(l=>leaveKey(l)==="7-10"))},
  {id:"bigfour",ic:"4",name:"Big Four Down",desc:()=>"Convert the big four (4-6-7-10).",test:per(g=>leavesMade(g).some(l=>leaveKey(l)==="4-6-7-10"))},
  {id:"greek",ic:"GC",name:"Church Goer",desc:()=>"Convert a Greek church.",test:per(g=>leavesMade(g).some(l=>["4-6-7-9-10","4-6-7-8-10"].includes(leaveKey(l))))},
@@ -1043,6 +1192,8 @@ const BADGES=[
  {id:"staircase",ic:"▁▃▅",name:"Staircase",desc:()=>"Three games in a row in one day, each better than the last.",test:gs=>seriesOf(gs).filter(t=>gameScore(t[0])<gameScore(t[1])&&gameScore(t[1])<gameScore(t[2])).map(t=>t[2])},
  {id:"steady",ic:"≈",name:"Steady Eddie",desc:()=>"Three games in a row within 10 pins of each other.",test:gs=>seriesOf(gs).filter(t=>{const v=t.map(gameScore);return Math.max(...v)-Math.min(...v)<=10;}).map(t=>t[2])},
  {id:"dejavu",ic:"=",name:"Déjà Vu",desc:()=>"Bowl the same score twice in one day.",test:gs=>{const seen={},out=[];gs.forEach(g=>{const k=isoDate(g.start)+"|"+gameScore(g);if(seen[k])out.push(g);seen[k]=1;});return out;}},
+ {id:"balls",ic:"●",name:"Ball Thrower",tiers:[500,1000,2500,5000,10000],tl:t=>t.toLocaleString()+" balls",desc:t=>`Throw ${t.toLocaleString()} balls in all. Games entered as a final score only don't count.`,
+  test:(gs,t)=>{let n=0;for(const g of gs){if(g.scoreOnly!=null)continue;const before=n;n+=g.frames.reduce((a,f)=>a+f.length,0);if(before<t&&n>=t)return [g];}return [];}},
  {id:"marathon",ic:"6+",name:"Marathon",tiers:[6,8,10],tl:t=>t+" games",desc:t=>`Bowl ${t} or more games in one day.`,test:(gs,t)=>byDay(gs).filter(d=>d.length>=t).map(d=>d[t-1])},
  {id:"early",ic:"AM",name:"Early Bird",desc:()=>"Start a game before 10 AM.",test:per(g=>new Date(g.start).getHours()<10)},
  {id:"owl",ic:"PM",name:"Night Owl",desc:()=>"Start a game at 10 PM or later.",test:per(g=>new Date(g.start).getHours()>=22)},
@@ -1054,15 +1205,15 @@ function frameTypes(g){if(g.scoreOnly!=null)return null;const a=annotate(g.frame
 /* leaves you picked up in a game (pin-tracked frames only) */
 function leavesMade(g){if(!pinTracked(g))return [];const out=[];annotate(g.frames).forEach((r,fi)=>{if((g.pf||[]).includes(fi))return;r.forEach((o,i)=>{if(o.fresh&&!o.clear&&r[i+1]&&r[i+1].clear)out.push(o.after);});});return out;}
 function badgeCard(games){
-  const gs=games.slice().sort((a,b)=>a.start-b.start),METAL=["bronze","silver","gold","plat"];
+  const gs=games.slice().sort((a,b)=>a.start-b.start),METAL=["bronze","silver","gold","plat","diamond"];
   const rows=BADGES.map(b=>{const tiers=b.tiers||[null];
     const res=tiers.map(t=>{let hits=[];try{hits=b.test(gs,t)||[];}catch(e){}return {t,n:hits.length,first:hits.length?hits[0].start:0};});
     let lvl=0;res.forEach((r,i)=>{if(r.n)lvl=i+1;});
-    const metal=!b.tiers?"gold":METAL[Math.min(METAL.length-1,lvl-1+(4-tiers.length>0?4-tiers.length-1:0))]||"gold";
+    const metal=!b.tiers?"gold":tiers.length>5?METAL[Math.floor((lvl-1)*4/(tiers.length-1))]:METAL[Math.min(METAL.length-1,lvl-1+(4-tiers.length>0?4-tiers.length-1:0))]||"gold";
     return {b,res,lvl,metal,n:res[0].n,first:res[0].first,next:res[lvl]};});
   const got=rows.filter(r=>r.lvl).length,tiered=rows.filter(r=>r.b.tiers);
   const card=r=>{const b=r.b,top=r.res[Math.max(0,r.lvl-1)];
-    return `<div class="bcard${r.lvl?"":" locked"}"><span class="medal ${r.lvl?r.metal:""}">${esc(b.ic)}</span><div style="min-width:0"><b>${esc(b.name)}${b.tiers&&r.lvl?` <span class="tierno">${["","I","II","III","IV"][r.lvl]}</span>`:""}</b>
+    return `<div class="bcard${r.lvl?"":" locked"}${r.lvl&&r.metal==="diamond"?" dia":""}"><span class="medal ${r.lvl?r.metal:""}">${esc(b.ic)}</span><div style="min-width:0"><b>${esc(b.name)}${b.tiers&&r.lvl?` <span class="tierno">${["","I","II","III","IV","V","VI","VII","VIII","IX","X"][r.lvl]}</span>`:""}</b>
       <span class="bd">${r.lvl&&r.next?"<b class=\"nx\">Next:</b> ":""}${esc(r.next?b.desc(r.next.t):b.desc(b.tiers?b.tiers[b.tiers.length-1]:null))}</span>
       ${b.tiers?`<span class="tiers">${r.res.map((x,i)=>`<i class="${x.n?"on":""}">${x.n?"✓ ":""}${esc(String(b.tl(x.t)))}</i>`).join("")}</span>`:""}
       ${r.lvl?`<span class="be">${top.n>1?"×"+top.n+" · ":""}${b.tiers?"reached "+esc(String(b.tl(top.t)))+" ":""}first ${new Date(r.res[0].first).toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"})}</span>`:""}</div></div>`;};
@@ -1108,10 +1259,15 @@ function statsView(){
       <div class="tile"><div class="eyebrow">Lifetime average</div><div class="v">${la!=null?fx(la):"—"}</div><div class="s">${all.length} games</div></div>`;})()}
       <div class="tile"><div class="eyebrow">High game</div><div class="v">${st.high}</div><div class="s">${st.over200} over 200</div></div>
       <div class="tile"><div class="eyebrow">Strike rate</div><div class="v">${pf(st.strikes,st.strikeOpp)}<small>%</small></div><div class="s">${st.strikes} strikes</div></div>
-      <div class="tile"><div class="eyebrow">Spare rate</div><div class="v">${pf(st.spares,st.spareOpp)}<small>%</small></div><div class="s">${st.spares} of ${st.spareOpp}</div></div></div>`,
+      <div class="tile"><div class="eyebrow">Spare rate</div><div class="v">${pf(st.spares,st.spareOpp)}<small>%</small></div><div class="s">${st.spares} of ${st.spareOpp}</div></div>
+      <div class="tile"><div class="eyebrow">Single-pin spares</div><div class="v">${pf(st.singlesMade,st.singles)}<small>%</small></div><div class="s">${st.singlesMade} of ${st.singles}</div></div>
+      <div class="tile"><div class="eyebrow">Clean game chance</div><div class="v">${(()=>{const c=cleanChance(st);return c==null?"—":chanceStr(c*100).replace("%","")+"<small>%</small>";})()}</div><div class="s">${(()=>{const c=cleanChance(st);return c?"about 1 in "+oneIn(1/c)+" games":"at your rates";})()}</div></div></div>`,
     trend:`<div class="panel chart stack"><div class="eyebrow">Score trend</div>${trendChart(games)}</div>`,
     dist:`<div class="panel chart stack"><div class="eyebrow">Score distribution</div>${distChart(games)}</div>`,
     road300:perfectPanel(st),
+    cleanodds:cleanPanel(st,games),
+    length:lengthPanel(games,sample?SAMPLES:real),
+    finder:leaveFinder(sample?SAMPLES:real,sample?SAMPLES:real),
     shot:`<div class="panel stack"><div class="eyebrow">Shot making</div>
       ${meter("Single-pin spares",st.singlesMade,st.singles,"g")}
       ${meter("Splits converted",st.splitsMade,st.splits)}
@@ -1137,7 +1293,9 @@ function statsView(){
     badges:badgeCard(sample?SAMPLES:real),
     leavedex:leaveDex(S.range==="all"?st:computeStats(sample?SAMPLES:real)),
     bypins:`<div class="panel stack"><div class="eyebrow">Spares by pins left</div>
-      ${[["1","1 pin"],["2","2 pins"],["3","3 pins"],["4","4 or more pins"],["split","Splits"]].map(([k,l])=>{const b=st.byPins[k]||{n:0,made:0};return meter(l,b.made,b.n,k==="split"?"":"g");}).join("")}</div>`,
+      ${[1,2,3,4,5,6,7,8,9].filter(k=>k<=4||st.byN[k]).map(k=>{const b=st.byN[k]||{n:0,made:0};return meter(k+"-pin spares",b.made,b.n,"g");}).join("")}
+      ${(()=>{const b=st.byPins.split||{n:0,made:0};return meter("Splits (any size)",b.made,b.n,"");})()}
+      <p class="muted" style="margin:0;font-size:12px">Spares that aren't splits, by how many pins were left. 5 pins and up show once you've had one.</p></div>`,
     byframe:`<div class="panel stack"><div class="eyebrow">Strike rate by frame</div>${frameBars(st.frameStrike)}</div>`,
     lane:`<div class="panel stack"><div class="eyebrow">Average by lane</div>${lanes.length?lanes.map(l=>`<div class="meter"><div class="top2"><span>Lane ${esc(l.k)} <span class="muted">· ${l.n} game${l.n===1?"":"s"}</span></span><b>${fx(l.avg)}</b></div><div class="bar"><i style="width:${l.avg/maxLane*100}%"></i></div></div>`).join(""):`<p class="muted">Add a lane number when you start a game.</p>`}</div>`,
     gameday:`<div class="panel stack"><div class="eyebrow">Average by game of the day</div>${gRows.map(r=>`<div class="meter"><div class="top2"><span>${r.k===4?"4th game and later":["","1st game","2nd game","3rd game"][r.k]} <span class="muted">· ${r.n} game${r.n===1?"":"s"}</span></span><b>${fx(r.avg)}</b></div><div class="bar g"><i style="width:${r.avg/maxG*100}%"></i></div></div>`).join("")}
@@ -1276,7 +1434,7 @@ function historyView(){
   const bctx=badgeCtx(pool);
   const row=g=>{const open=S.expanded===g.id,s=gameScore(g);
     return `<div class="hrow${g.noAvg?" noavg-row":""}"><button data-act="expand" data-id="${g.id}" aria-expanded="${open}"><div><b>Game ${gameOfDay(g,pool)}</b> <span class="muted">${[g.lane?"Lane "+esc(g.lane):"",new Date(g.start).toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"})].filter(Boolean).join(" · ")}</span> ${methodTag(g)}</div><div class="score">${rankChip(g,bctx)}<span class="sv" style="${s>=200&&!g.noAvg?"color:var(--accent)":""}">${s}${g.noAvg?'<span class="na">not in avg</span>':""}</span></div><div class="marks">${g.notes?'<span class="chip" style="font-size:11px;padding:0 6px;margin-right:6px">Notes</span>':""}${g.scoreOnly!=null?"Final score only":marksHtml(g.frames,g.brooklyn)}</div>${gameBadges(g,bctx)}</button>
-    ${open&&fv?`<div class="det">${card(g,-1)}${timingLine(g)}<div class="muted" style="font-size:14px">${esc(gameNote(g))}</div>${g.notes?`<div class="notes">${esc(g.notes)}</div>`:""}</div>`:open?`<div class="det">${S.editing===g.id?editForm(g):`${card(g,-1)}${timingLine(g)}<div class="muted" style="font-size:14px">${esc(gameNote(g))}</div>${g.notes?`<div class="notes">${esc(g.notes)}</div>`:""}<button class="btn sm" data-act="edit" data-id="${g.id}" style="align-self:flex-start">Edit game</button>`}${metaFields(g)}${S.confirm===g.id?`<div class="row"><span>Delete this game for good?</span><button class="btn sm danger" data-act="del-yes" data-id="${g.id}">Delete</button><button class="btn sm" data-act="confirm-no">Keep</button></div>`:`<button class="btn sm ghost danger" data-act="del" data-id="${g.id}" style="align-self:flex-start">Delete game</button>`}</div>`:""}</div>`;};
+    ${open&&fv?`<div class="det">${card(g,-1)}${timingLine(g)}<div class="muted" style="font-size:14px">${esc(gameNote(g))}</div>${leavesLine(g)}${g.notes?`<div class="notes">${esc(g.notes)}</div>`:""}</div>`:open?`<div class="det">${S.editing===g.id?editForm(g):`${card(g,-1)}${timingLine(g)}<div class="muted" style="font-size:14px">${esc(gameNote(g))}</div>${leavesLine(g)}${g.notes?`<div class="notes">${esc(g.notes)}</div>`:""}<button class="btn sm" data-act="edit" data-id="${g.id}" style="align-self:flex-start">Edit game</button>`}${metaFields(g)}${S.confirm===g.id?`<div class="row"><span>Delete this game for good?</span><button class="btn sm danger" data-act="del-yes" data-id="${g.id}">Delete</button><button class="btn sm" data-act="confirm-no">Keep</button></div>`:`<button class="btn sm ghost danger" data-act="del" data-id="${g.id}" style="align-self:flex-start">Delete game</button>`}</div>`:""}</div>`;};
   return `${whoBar()}${friendBanner()}<h2 style="font-family:var(--f-display);font-weight:400;font-size:24px">History <span class="muted num" style="font-family:var(--f-num);font-size:18px">${games.length} games · ${days.length} day${days.length===1?"":"s"}</span></h2><div class="hist">${days.map(d=>{
     const sc=d.games.map(gameScore),avs=d.games.filter(g=>!g.noAvg).map(gameScore),centers=[...new Set(d.games.map(g=>g.center).filter(Boolean))];
     const others=pool.filter(g=>isoDate(g.start)<d.k);
@@ -1367,40 +1525,44 @@ function celebrate(pop){
   celebRaf=requestAnimationFrame(step);
 }
 function closeCelebrate(){const el=document.getElementById("celebrate");if(el){el.hidden=true;el.innerHTML="";}clearTimeout(celebTimer);cancelAnimationFrame(celebRaf);}
+/* typing a pin count instead of tapping pins: the whole game (pin counts only), count mode switched on, or finishing a frame that was started by count */
+const countNow=(g,ns)=>!!(g.pinless||S.cmode||((g.pf||[]).includes(ns.fi)&&ns.ri>0));
 function calloutFor(g,before){
-  const ann=annotate(g.frames);const fi=ann.length-1,rolls=ann[fi],o=rolls[rolls.length-1];
+  const ann=annotate(g.frames);const fi=ann.length-1,rolls=ann[fi],o=rolls[rolls.length-1],nopins=g.pinless||(g.pf||[]).includes(fi);
   let run=0;const flatFresh=[];ann.forEach(r=>r.forEach(x=>{if(x.fresh)flatFresh.push(x.clear);}));
   for(let i=flatFresh.length-1;i>=0&&flatFresh[i];i--)run++;
   if(o.clear&&o.fresh){const n=RUN_NAMES[Math.min(run,12)]||"STRIKE!";
     const pop=run>=3?{title:run>=12?"PERFECT GAME":n.replace("!",""),sub:run>=12?"Twelve strikes. 300.":run+" strikes in a row",level:run}:null;
     const porno=fi===9&&rolls.length===3&&rolls.every(x=>x.clear&&x.fresh)&&run<12;
     return {text:run>=12?"PERFECT 300!":porno?"PORNO!":n,sub:porno&&run>3?`<span class="chip">${esc(n.replace("!","").toLowerCase().replace(/^./,c=>c.toUpperCase()))} too</span>`:porno?'<span class="muted">Three strikes in the 10th</span>':"",strikeKey:fi+"-"+(rolls.length-1),pop};}
-  if(o.clear){const conv=!g.pinless&&before.length>1&&isSplit(before),li=conv?leaveInfo(before):null;
+  if(o.clear){const conv=!nopins&&before.length>1&&isSplit(before),li=conv?leaveInfo(before):null;
     return {text:"SPARE",sub:conv?'<span class="chip good">Split converted</span>':"",pop:conv?{title:"SPLIT CONVERTED",sub:li.label+(li.name?" · "+li.name:""),pins:before,level:before.length>=3||li.key==="7-10"?9:5}:null};}
-  if(o.fresh&&o.after.length&&g.pinless)return {text:o.count+" DOWN",sub:`<span class="muted">${o.after.length} left for the spare</span>`};
-  if(o.fresh&&o.after.length){const li=leaveInfo(o.after);if(li.split)return {text:li.label,sub:'<span class="chip red">SPLIT</span>'+(li.name?` <span class="chip">${esc(li.name)}</span>`:"")};return null;}
+  if(o.fresh&&o.after.length&&nopins)return {text:o.count+" DOWN",sub:`<span class="muted">${o.after.length} left for the spare</span>`};
+  if(o.fresh&&o.after.length){const li=leaveInfo(o.after),nm=NAMES[li.key]||"",fit=FIT_KEYS.includes(li.key);
+    if(li.split||fit||nm)return {text:nm||li.label,sub:(nm?`<span class="chip">${esc(li.label)}</span> `:"")+(li.split?'<span class="chip red">SPLIT</span>':fit?'<span class="chip red">FIT SPLIT</span>':"")};return null;}
   if(!o.fresh&&o.after.length) return {text:"OPEN",sub:`<span class="muted">${o.after.length} left</span>`};
   return null;
 }
 function undoRoll(g,keep){const fi=g.frames.length-1,l=g.frames[fi];const k=fi+"-"+(l.length-1);
   const wasB=(g.brooklyn||[]).includes(k);
   if(keep){if(!S.redo||S.redo.gid!==g.id)S.redo={gid:g.id,stack:[]};S.redo.stack.push({down:l[l.length-1].slice(),b:wasB});}
-  g.brooklyn=(g.brooklyn||[]).filter(x=>x!==k);l.pop();if(!l.length)g.frames.pop();}
+  g.brooklyn=(g.brooklyn||[]).filter(x=>x!==k);l.pop();if(!l.length){g.frames.pop();if(g.pf)g.pf=g.pf.filter(x=>x!==fi);}}
 const redoCount=g=>S.redo&&g&&S.redo.gid===g.id?S.redo.stack.length:0;
 function redoRoll(){const g=active();if(!redoCount(g))return;const r=S.redo.stack.pop();const ns=nextState(g.frames);if(!ns)return;
   addRoll(g.frames,r.down.filter(p=>ns.standing.includes(p)));const fi=g.frames.length-1,k=fi+"-"+(g.frames[fi].length-1);
   if(r.b){g.brooklyn=(g.brooklyn||[]).filter(x=>x!==k);g.brooklyn.push(k);}
   S.sel.clear();S.callout=calloutFor(g,ns.standing);if(S.callout)S.callout.pop=null;
-  if(isDone(g.frames)){g.done=true;g.t1=Date.now();S.callout={over:g.id,strikeKey:S.callout&&S.callout.strikeKey,last:S.callout&&S.callout.strikeKey?{text:S.callout.text,sub:S.callout.sub}:null};S.redo=null;}
+  if(isDone(g.frames)){g.done=true;g.t1=Date.now();S.cmode=false;S.callout={over:g.id,strikeKey:S.callout&&S.callout.strikeKey,last:S.callout&&S.callout.strikeKey?{text:S.callout.text,sub:S.callout.sub}:null};S.redo=null;}
   saveGame(g);render();}
 function strikeType(g,key){const b=(g.brooklyn||[]).includes(key);
   return `<div class="stype" role="group" aria-label="Strike type"><span class="muted">What kind?</span><div class="seg"><button data-act="stype" data-v="n" data-k="${key}" aria-pressed="${!b}">Normal</button><button data-act="stype" data-v="b" data-k="${key}" aria-pressed="${b}">Brooklyn</button></div></div>`;}
+function markCount(g,ns){if(!g.pinless&&!(g.pf||[]).includes(ns.fi))g.pf=(g.pf||[]).concat(ns.fi).sort((a,b)=>a-b);}
 function record(downList){
   const g=active();if(!g)return;const ns=nextState(g.frames);S.redo=null;
   if(!g.frames.length&&!g.t0)g.t0=Date.now();
   addRoll(g.frames,downList);S.sel.clear();
   S.callout=calloutFor(g,ns.standing);const pop=S.callout&&S.callout.pop;
-  if(isDone(g.frames)){g.done=true;g.t1=Date.now();S.callout={over:g.id,strikeKey:S.callout&&S.callout.strikeKey,last:S.callout&&S.callout.strikeKey?{text:S.callout.text,sub:S.callout.sub}:null};}
+  if(isDone(g.frames)){g.done=true;g.t1=Date.now();S.cmode=false;S.callout={over:g.id,strikeKey:S.callout&&S.callout.strikeKey,last:S.callout&&S.callout.strikeKey?{text:S.callout.text,sub:S.callout.sub}:null};}
   saveGame(g);render();
 }
 /* chart tooltips: tap (or click) a point or bar; tap anywhere else to close */
@@ -1470,7 +1632,9 @@ document.addEventListener("click",e=>{
     case "fr-del-yes":{saveFriends(loadFriends().filter(f=>f.id!==b.dataset.id));if(S.who===b.dataset.id)S.who=null;S.confirm=null;toast("Friend removed");render();break;}
     case "gameno":{const gg=S.games.find(x=>x.id===b.dataset.id);if(gg){gg.gameNo=+b.dataset.n;saveGame(gg);render();}break;}
     case "newmode":S.newMode=b.dataset.m;render();break;
-    case "count":if(g){const ns=nextState(g.frames),n=+b.dataset.n;if(n<=ns.standing.length)record(ns.standing.slice(0,n));}break;
+    case "count":if(g){const ns=nextState(g.frames),n=+b.dataset.n;if(n<=ns.standing.length){markCount(g,ns);record(ns.standing.slice(0,n));}}break;
+    case "len-m":S.lenM=b.dataset.m;render();break;
+    case "cmode":S.cmode=b.dataset.on==="1";S.sel.clear();S.callout=null;render();break;
     case "savescore":S.newMode="score";{const v=($("#ns").value||"").trim(),n=Number(v);
       if(!/^\d{1,3}$/.test(v)||n>300){toast("Enter a final score from 0 to 300.");break;}
       const t=fromIso($("#nd").value,Date.now());if(!t){toast("Pick the date you bowled.");break;}
@@ -1478,6 +1642,13 @@ document.addEventListener("click",e=>{
       const ng={id:"g_"+Date.now(),start:t,lane,center,done:true,frames:[],brooklyn:[],scoreOnly:n};
       S.games.push(ng);S.games.sort((a,b)=>a.start-b.start);S.callout={over:ng.id};saveGame(ng);toast("Game saved");render();break;}
     case "p300":updatePerfect(+b.dataset.v);break;
+    case "cg-mine":S.cg=null;render();break;
+    case "lf-pin":{const p=+b.dataset.pin,L=S.lf;L.pins=L.pins.includes(p)?L.pins.filter(x=>x!==p):L.pins.concat(p);render();break;}
+    case "lf-mode":S.lf.mode=b.dataset.m;render();break;
+    case "lf-range":S.lf.range=b.dataset.r;render();break;
+    case "lf-n":S.lf.n=+b.dataset.n;render();break;
+    case "lf-clear":S.lf.pins=[];render();break;
+    case "lf-pick":S.lf.pins=b.dataset.k.split("-").map(Number);S.lf.mode="exact";render();break;
     case "p3nudge":updatePerfect(Math.round(S.p300!=null?S.p300:+document.getElementById("p300").value)+(+b.dataset.d));break;
     case "set":{const k=b.dataset.k;let v=b.dataset.v;if(k==="dec")v=+v;S.set[k]=v;saveSettings();if(k==="theme")applyTheme();if(k==="entry")S.newMode=null;render();break;}
     case "celeb-preview":{const prev=S.set.celebrate;S.set.celebrate=true;celebrate({title:"TURKEY",sub:"3 strikes in a row",level:3});S.set.celebrate=prev;break;}
@@ -1502,12 +1673,14 @@ document.addEventListener("input",e=>{
   const r=parseAll(strs);out.textContent=r.err?"Total —":"Total "+lastScore(countsToFrames(r.counts));
 });
 document.addEventListener("toggle",e=>{const d=e.target;if(d&&d.dataset&&d.dataset.badges){if(d.dataset.badges==="earned")S.badgeEarned=d.open;else S.badgeOpen=d.open;}if(d&&d.classList&&d.classList.contains("splitgrp")){S.splitOpen=Object.assign({},S.splitOpen,{[d.dataset.size]:d.open});}},true);
-document.addEventListener("input",e=>{if(!e.target)return;if(e.target.id==="p300")updatePerfect(+e.target.value);
+document.addEventListener("input",e=>{if(!e.target)return;if(e.target.id==="cg-s"||e.target.id==="cg-c"){updateClean();return;}if(e.target.id==="p300")updatePerfect(+e.target.value);
   else if(e.target.id==="p3-rate-in"&&e.target.value!==""&&+e.target.value>0)updatePerfect(+e.target.value,true);});
 document.addEventListener("change",e=>{
   if(e.target&&e.target.id==="set-recent"){S.set.recent=e.target.value;saveSettings();toast("Current average: "+recentLabel());return;}
   if(e.target&&e.target.dataset&&e.target.dataset.statShow){const id=e.target.dataset.statShow,h=new Set(S.set.statHidden||[]);e.target.checked?h.delete(id):h.add(id);S.set.statHidden=[...h];saveSettings();return;}
   if(e.target&&e.target.dataset&&e.target.dataset.set){const k=e.target.dataset.set;S.set[k]=!!e.target.checked;saveSettings();if(k==="awake")applyWake();render();return;}
+  if(e.target.id==="lf-n"){const v=Math.round(+e.target.value);if(v>=1){S.lf.n=Math.min(9999,v);render();}return;}
+  if(e.target.id==="lf-from"||e.target.id==="lf-to"){S.lf[e.target.id==="lf-from"?"from":"to"]=e.target.value;render();return;}
   if(e.target.id==="restore"){const f=e.target.files&&e.target.files[0];if(f)importBackup(f);e.target.value="";return;}
   const df=e.target.dataset&&e.target.dataset.dateFor;
   if(df){const g=S.games.find(x=>x.id===df);const t=g&&fromIso(e.target.value,g.start);
@@ -1522,7 +1695,7 @@ document.addEventListener("change",e=>{
 document.addEventListener("keydown",e=>{
   if(S.tab!=="bowl"||/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)||e.metaKey||e.ctrlKey||e.altKey)return;
   const g=active();if(!g)return;const ns=nextState(g.frames);
-  if(g.pinless&&/^[0-9]$/.test(e.key)){const n=+e.key;if(n<=ns.standing.length)record(ns.standing.slice(0,n));e.preventDefault();return;}
+  if(countNow(g,ns)&&/^[0-9]$/.test(e.key)){const n=+e.key;if(n<=ns.standing.length){markCount(g,ns);record(ns.standing.slice(0,n));}e.preventDefault();return;}
   if(/^[0-9]$/.test(e.key)){const p=e.key==="0"?10:+e.key;if(ns.standing.includes(p)){S.sel.has(p)?S.sel.delete(p):S.sel.add(p);S.callout=null;render();}e.preventDefault();}
   else if(e.key==="Enter"){record([...S.sel].filter(p=>ns.standing.includes(p)));e.preventDefault();}
   else if(e.key==="x"||e.key==="X"||e.key==="/"){record(ns.standing);e.preventDefault();}
