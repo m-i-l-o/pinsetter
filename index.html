@@ -318,6 +318,11 @@ rect.tpt.on{opacity:1;stroke:var(--ink);stroke-width:2}
 .medal{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-num);font-weight:700;font-size:14px;letter-spacing:-.02em;
   background:radial-gradient(circle at 35% 30%,#FFE8A3,#E0A82E 70%);color:#3A2600;box-shadow:inset 0 0 0 3px rgba(255,255,255,.45),0 2px 4px rgba(0,0,0,.15)}
 .bcard.locked{opacity:.55;border-style:dashed}
+.scgrid{display:flex;flex-direction:column;gap:3px}.scrow{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:6px;align-items:center}.scrow span{font-size:11px;color:var(--muted);text-align:right}
+.sccells{display:grid;align-items:start;grid-template-columns:repeat(50,minmax(0,1fr));gap:1px}.sccells .scx{display:block;height:12px;border:0;box-shadow:none;outline:0;padding:0;min-width:0;background:var(--surface-2);border-radius:1.5px}.sccells .scx.on{background:var(--accent)}.sc.on{background:var(--accent)}
+.lucktbl{width:100%;border-collapse:collapse;font-size:14px}.lucktbl th{font-size:11px;color:var(--muted);font-weight:600;text-align:left;padding:2px 6px 4px 0}.lucktbl td{padding:4px 6px 4px 0;border-top:1px solid var(--line)}
+.rarity{font-size:13px;line-height:1.4;padding:8px 10px;border-radius:10px;background:var(--surface-2);text-align:left}.rarity.hot{border:1px solid var(--accent)}.rarity span{color:var(--muted)}
+.pj.leaveadj{grid-column:1/-1}.pj.leaveadj small{font-size:13px;margin-left:4px;font-weight:700}.pj.leaveadj small.neg{color:var(--accent)}.pj.leaveadj small.pos{color:var(--good)}
 .lenwrap{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
 @media (min-width:860px){.lenwrap{grid-template-columns:minmax(0,1.6fr) minmax(220px,1fr)}}
 .lenrow{display:grid;grid-template-columns:minmax(0,8.6em) minmax(0,1fr) 3.4em;gap:8px;align-items:center;width:100%;background:none;border:1px solid transparent;border-radius:8px;padding:5px 6px;color:var(--ink);font:inherit;font-size:13px;text-align:left;cursor:pointer}
@@ -551,7 +556,7 @@ const defaultProfile=()=>({name:"",tag:"",lane:"",center:"",ball:"",hand:"Righty
 const S={profile:defaultProfile(),games:[],tab:"bowl",sel:new Set(),range:"all",
   mode:"local",expanded:null,confirm:null,callout:null,startLane:null,startCenter:null};
 const SET_KEY="pinsetter.settings";
-const DEFAULT_SET={recent:"g21",theme:"system",dec:1,celebrate:true,entry:"pins",proj:true,awake:true,pinNums:true};
+const DEFAULT_SET={recent:"g21",theme:"system",dec:1,celebrate:true,entry:"pins",proj:true,awake:true,pinNums:true,laneFill:false};
 function loadSettings(){try{return Object.assign({},DEFAULT_SET,JSON.parse(localStorage.getItem(SET_KEY)||"{}"));}catch(e){return Object.assign({},DEFAULT_SET);}}
 function saveSettings(){try{localStorage.setItem(SET_KEY,JSON.stringify(S.set));}catch(e){}}
 S.set=loadSettings();
@@ -901,7 +906,7 @@ function bowlView(){
   const g=active();
   if(!g){
     const last=(S.callout&&S.callout.over&&S.games.find(x=>x.id===S.callout.over))||realDone().slice(-1)[0];
-    const lane=S.startLane!=null?S.startLane:S.profile.lane,center=S.startCenter!=null?S.startCenter:S.profile.center;
+    const lane=S.startLane!=null?S.startLane:(S.set.laneFill?S.profile.lane:""),center=S.startCenter!=null?S.startCenter:S.profile.center;
     const showOver=last&&S.callout&&S.callout.over===last.id;
     let h="";
     if(showOver){
@@ -961,6 +966,7 @@ function bowlView(){
       <div class="pj best"><span class="eyebrow">Highest possible</span><span class="v">${mx}</span><span class="s">if you strike out from here</span></div>
       <div class="pj"><span class="eyebrow">On pace for</span><span class="v">${pace!=null?pace:"—"}</span><span class="s">${scored?`keeping this game's ${fx(cur/scored)} per frame`:"after your first scored frame"}</span></div>
       <div class="pj"><span class="eyebrow">At your average</span><span class="v">${atAvg!=null?atAvg:"—"}</span><span class="s">${career!=null?`bowling your current ${career.toFixed(0)} average the rest of the way`:"after you finish a game"}</span></div>
+      ${(()=>{const la=leaveAdjust(g,ns,atAvg,mx);return la?`<div class="pj leaveadj"><span class="eyebrow">With this leave</span><span class="v">${la.v}<small class="${la.d<0?"neg":"pos"}">${la.d>0?"+":la.d<0?"−":"±"}${Math.abs(la.d)}</small></span><span class="s">${esc(la.why)}</span></div>`:"";})()}
     </div>`:""}</div>
   <div class="deckwrap">
     ${entryHtml||`<div class="lane"><div class="deck">${pins}</div><div class="lane-hint">${sel.length?sel.length+" down":"Tap pins knocked down"}</div><div class="arrows" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>`}
@@ -988,6 +994,16 @@ function leavesLine(g){if(!pinTracked(g))return "";const out=[];
     const made=!!(r[i+1]&&r[i+1].clear);let e=out.find(x=>x.k===k);if(!e)out.push(e={k,nm,sp,fit,fr:[],made:0});e.fr.push(fi+1);if(made)e.made++;});});
   const chips=out.map(e=>`<span class="chip${e.sp||e.fit?" red":""}" title="Frame ${e.fr.join(", ")}">${esc(e.nm?e.nm+" ("+e.k+")":e.k)}${e.sp?" split":e.fit?" fit split":""} · ${e.fr.length>1?"×"+e.fr.length:"F"+e.fr[0]}${e.made?(e.fr.length>1?" · "+e.made+" made":" ✓"):""}</span>`);
   return chips.length?`<div class="row" style="gap:6px;flex-wrap:wrap;justify-content:inherit">${chips.join("")}</div>`:"";}
+/* how unusual a score is for you, from the spread of your other counted games */
+function normCdf(z){const t=1/(1+0.2316419*Math.abs(z)),d=0.3989423*Math.exp(-z*z/2),p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));return z>0?1-p:p;}
+function rarityLine(g){const v=gameScore(g);if(v==null||!g.done&&g.scoreOnly==null)return "";
+  const pool=realDone().filter(x=>x.id!==g.id&&!x.noAvg).map(gameScore).filter(x=>x!=null);if(pool.length<10)return "";
+  const n=pool.length,mu=pool.reduce((a,b)=>a+b,0)/n,sd=Math.sqrt(pool.reduce((a,b)=>a+(b-mu)*(b-mu),0)/(n-1));if(!sd)return "";
+  const z=(v-mu)/sd,up=z>=0,p=up?1-normCdf(z):normCdf(z),emp=pool.filter(x=>up?x>=v:x<=v).length;
+  const oneInN=p>0?oneIn(1/p):"∞",pct=p*100;
+  const head=Math.abs(z)<0.5?"A typical game for you":up?(z>=2.5?"Very rare for you":z>=1.5?"Rare for you":"Better than usual"):(z<=-2.5?"Very rare (in a bad way)":z<=-1.5?"Rare low game":"Below your usual");
+  const body=Math.abs(z)<0.5?`Your average is ${fx(mu)}, give or take ${Math.round(sd)}.`:`You'd bowl ${up?"this or better":"this or lower"} about 1 in ${oneInN} games (${up?"top":"bottom"} ${chanceStr(pct)}), going by your ${fx(mu)} average, give or take ${Math.round(sd)}. You've ${up?"matched or beaten":"matched or gone under"} it in ${emp} of ${n} other games.`;
+  return `<div class="rarity${Math.abs(z)>=1.5?" hot":""}"><b>${head}</b> <span>${esc(body)}</span></div>`;}
 function gameNote(g){
   if(g.scoreOnly!=null)return "Final score only";
   const st=computeStats([g]);const bits=[];
@@ -1046,6 +1062,18 @@ function cleanChance(st){if(!st.strikeOpp||!st.spareOpp)return null;return Math.
 function oneIn(n){if(!Number.isFinite(n))return "∞";if(n<10)return (+n.toFixed(1)).toString();if(n<1e6)return Math.round(n).toLocaleString();return bigNum(n);}
 function cleanText(s,c){const m=markP(s/100,c/100),g=Math.pow(m,10),ser=Math.pow(m,30);
   return {mark:m*100,game:g,series:ser,games:g>0?oneIn(1/g):"∞",sgames:ser>0?oneIn(1/ser):"∞"};}
+/* every score from 0 to 300 you have bowled at least once */
+function scoreSetPanel(all){
+  const done=all.filter(g=>g.done||g.scoreOnly!=null),cnt=new Map();done.forEach(g=>{const v=gameScore(g);if(v!=null)cnt.set(v,(cnt.get(v)||0)+1);});
+  const have=cnt.size,avg=done.length?done.reduce((a,g)=>a+gameScore(g),0)/done.length:150;
+  const near=[];for(let d=0;d<=300&&near.length<5;d++){[Math.round(avg)+d,Math.round(avg)-d].forEach(v=>{if(v>=0&&v<=300&&!cnt.has(v)&&!near.includes(v)&&near.length<5)near.push(v);});}
+  const rows=[];for(let r=0;r<=300;r+=50){const cells=[];for(let v=r;v<Math.min(r+50,301);v++){const n=cnt.get(v)||0;cells.push(`<span class="scx${n?" on":""}" title="${v}${n?" · "+n+" game"+(n===1?"":"s"):" · not yet"}"></span>`);}rows.push(`<div class="scrow"><span class="num">${r}</span><div class="sccells">${cells.join("")}</div></div>`);}
+  return `<div class="panel stack"><div class="eyebrow">Scores collected</div>
+    <div class="p3-big"><span class="num">${have?pf(have,301):0}%</span><span> of all scores</span></div>
+    <p style="margin:0">You've bowled <b>${have}</b> of the 301 possible scores, from 0 to 300.${near.length&&done.length?` Closest ones you haven't shot to your average: ${near.sort((a,b)=>a-b).join(", ")}.`:""}</p>
+    <div class="scgrid" aria-label="Scores 0 to 300; filled squares are scores you have bowled">${rows.join("")}</div>
+    <p class="muted" style="margin:0;font-size:12px">Each square is one score; each row is 50 scores. Hold or hover a square to see it.</p></div>`;
+}
 function cleanPanel(st,games){
   const ys=st.strikeOpp?st.strikes/st.strikeOpp*100:null,yc=st.spareOpp?st.spares/st.spareOpp*100:null;
   if(ys==null||yc==null)return `<div class="panel stack"><div class="eyebrow">Clean game odds</div><p class="muted" style="margin:0">Bowl a game with pins or pin counts and your odds of a clean game show up here.</p></div>`;
@@ -1061,6 +1089,13 @@ function cleanPanel(st,games){
     <input type="range" id="cg-c" min="0" max="100" step="1" value="${cc}">
     <div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn sm" data-act="cg-mine">Reset to mine</button></div>
     <p class="muted" style="margin:0;font-size:13px">At your real rates: ${chanceStr(mine.game*100)} a game. ${played?`In ${played} game${played===1?"":"s"} the math expects ${exp<10?(+exp.toFixed(2)).toString():fx(exp)} clean game${Math.abs(exp-1)<.05?"":"s"}; you've bowled ${st.clean}.`:""} Raising spares 5 points makes it ${up(0,5)}; raising strikes 5 points makes it ${up(5,0)}.</p>
+    ${(()=>{if(!played)return "";const sx=ys/100,expC=played*mine.game,expP=played*Math.pow(sx,12),actP=games.filter(g=>g.scoreOnly==null&&g.done&&gameScore(g)===300).length;
+      const fmtE=v=>v>=10?fx(v):v>=0.01?(+v.toFixed(2)).toString():v.toExponential(1);
+      const verdict=(act,exp)=>exp<=0?"":act===0&&exp<0.5?"right on the odds":act>exp*1.5&&act>=1?`${fx(act/exp)}× the odds`:act<exp*0.67?"behind the odds":"about on the odds";
+      return `<div class="eyebrow" style="font-size:11px">You vs the odds</div><table class="lucktbl"><thead><tr><th></th><th>Expected</th><th>You</th><th></th></tr></thead><tbody>
+        <tr><td>Clean games</td><td class="num">${fmtE(expC)}</td><td class="num"><b>${st.clean}</b></td><td>${verdict(st.clean,expC)}</td></tr>
+        <tr><td>Perfect games</td><td class="num">${fmtE(expP)}</td><td class="num"><b>${actP}</b></td><td>${verdict(actP,expP)}</td></tr></tbody></table>
+        <p class="muted" style="margin:0;font-size:12px">Expected counts use your real strike and spare rates over your ${played} pin-tracked games. A perfect game is 12 strikes in a row, so its chance is your strike rate to the 12th.</p>`;})()}
     <p class="muted" style="margin:0;font-size:12px">A frame is a mark if you strike, or miss the strike and make the spare. A clean game is 10 marks in a row, so the chance is your mark rate to the 10th power. Assumes every frame is independent.</p></div>`;
 }
 function updateClean(){const q=id=>document.getElementById(id);if(!q("cg-s"))return;const s=+q("cg-s").value,c=+q("cg-c").value;S.cg={s,c};const t=cleanText(s,c);
@@ -1119,7 +1154,7 @@ function updatePerfect(v,typed){v=+v;if(!Number.isFinite(v))return;v=typed?Math.
   S.p300=v;const t=perfectText(v),q=id=>document.getElementById(id);
   if(q("p300"))q("p300").value=Math.round(v);if(q("p3-games"))q("p3-games").textContent=t.games;if(!typed&&q("p3-rate-in"))q("p3-rate-in").value=v;if(q("p3-rate-in"))q("p3-rate-in").style.width=p3w(q("p3-rate-in").value);
   if(q("p3-when"))q("p3-when").textContent=t.when;if(q("p3-chance"))q("p3-chance").textContent=chanceStr(t.chance);}
-const STAT_CARDS=[["summary","Summary tiles",1],["milestones","Achievements",1],["trend","Score trend",1],["dist","Score distribution",1],["shot","Shot making",0],["finder","Leave finder",1],["badges","Badges",1],["leavedex","Every leave",0],["road300","Road to 300",0],["cleanodds","Clean game odds",0],["length","Game length",1],
+const STAT_CARDS=[["summary","Summary tiles",1],["milestones","Achievements",1],["trend","Score trend",1],["dist","Score distribution",1],["scoreset","Scores collected",0],["shot","Shot making",0],["finder","Leave finder",1],["badges","Badges",1],["leavedex","Every leave",0],["road300","Road to 300",0],["cleanodds","Clean game odds",0],["length","Game length",1],
   ["leaves","Most common leaves",0],["makes","Most common makes",0],["rare","Rarest leaves",0],["heat","Pins you leave most",0],["named","Named leave collection",1],
   ["splits","Split collection",1],["bypins","Spares by pins left",0],["byframe","Strike rate by frame",0],["lane","Average by lane",0],["gameday","Average by game of the day",0]];
 function statOrder(){const ids=STAT_CARDS.map(c=>c[0]),saved=(S.set.statOrder||[]).filter(id=>ids.includes(id));return saved.concat(ids.filter(id=>!saved.includes(id)));}
@@ -1142,6 +1177,7 @@ const openStrikes=g=>{const a=frameTypes(g);if(!a)return 0;let n=0;while(n<10&&a
 const gutterCount=g=>g.scoreOnly==null?annotate(g.frames).reduce((n,r)=>n+r.filter(o=>o.fresh&&o.count===0).length,0):0;
 const hasDoubleGutter=g=>g.scoreOnly==null&&annotate(g.frames).some(r=>r.some((o,i)=>o.fresh&&o.count===0&&r[i+1]&&r[i+1].count===0));
 const splitsMadeIn=g=>leavesMade(g).filter(l=>isSplit(l)).length;
+const sameSplitMax=g=>{if(!pinTracked(g))return 0;const c={};annotate(g.frames).forEach((r,fi)=>{if((g.pf||[]).includes(fi))return;r.forEach(o=>{if(o.fresh&&!o.clear&&isSplit(o.after)){const k=leaveKey(o.after);c[k]=(c[k]||0)+1;}});});return Math.max(0,...Object.values(c));};
 const splitsFacedIn=g=>{if(!pinTracked(g))return 0;let n=0;annotate(g.frames).forEach((r,fi)=>{if((g.pf||[]).includes(fi))return;r.forEach(o=>{if(o.fresh&&!o.clear&&isSplit(o.after))n++;});});return n;};
 const byDay=gs=>{const by={};gs.forEach(g=>{(by[isoDate(g.start)]=by[isoDate(g.start)]||[]).push(g);});return Object.values(by);};
 const nth=(gs,key,n)=>{const seen=new Set(),out=[];gs.forEach(g=>{const k=key(g);if(k&&!seen.has(k)){seen.add(k);if(seen.size===n)out.push(g);}});return out;};
@@ -1182,6 +1218,7 @@ const BADGES=[
   test:per((g,t)=>{if(g.scoreOnly!=null)return false;const a=annotate(g.frames);if(a.length!==10||!a.every(r=>r[0]&&r[0].count===9))return false;
     return t==="nine"||(a.every(r=>r.length===2&&r[1].count===0)&&gameScore(g)===90);})},
  {id:"split",ic:"S",name:"Split Happens",tiers:[1,2,3],tl:t=>t===1?"1 split":t+" in a game",desc:t=>t===1?"Convert a split.":`Convert ${t} splits in one game.`,test:per((g,t)=>splitsMadeIn(g)>=t)},
+ {id:"dejavu",ic:"↻",name:"Déjà Vu",tiers:[2,3,4,5],tl:t=>t+"× same split",desc:t=>`Leave the exact same split ${t} times in one game.`,test:per((g,t)=>sameSplitMax(g)>=t)},
  {id:"splitcity",ic:"SC",name:"Split City",tiers:[3,4,5,6],tl:t=>t+" splits",desc:t=>`Leave ${t} splits in one game. Ouch.`,test:per((g,t)=>splitsFacedIn(g)>=t)},
  {id:"bedposts",ic:"7·10",name:"Bedpost Buster",desc:()=>"Convert the 7-10.",test:per(g=>leavesMade(g).some(l=>leaveKey(l)==="7-10"))},
  {id:"bigfour",ic:"4",name:"Big Four Down",desc:()=>"Convert the big four (4-6-7-10).",test:per(g=>leavesMade(g).some(l=>leaveKey(l)==="4-6-7-10"))},
@@ -1257,15 +1294,16 @@ function statsView(){
     summary:`<div class="tiles">${(()=>{const all=sample?SAMPLES:real,rg=recentGames(all),ra=avgOf(rg),la=avgOf(all),d=ra!=null&&la!=null?ra-la:0;
       return `<div class="tile hero wide"><div class="eyebrow">Current average · ${esc(recentLabel())}</div><div class="v">${ra!=null?fx(ra):"—"}</div><div class="s">${rg.length} game${rg.length===1?"":"s"}${ra!=null&&Math.abs(d)>=0.05?` · ${d>0?"▲":"▼"} ${fx(Math.abs(d))} vs lifetime`:""} · change in Settings</div></div>
       <div class="tile"><div class="eyebrow">Lifetime average</div><div class="v">${la!=null?fx(la):"—"}</div><div class="s">${all.length} games</div></div>`;})()}
-      <div class="tile"><div class="eyebrow">High game</div><div class="v">${st.high}</div><div class="s">${st.over200} over 200</div></div>
+      <div class="tile"><div class="eyebrow">High game</div><div class="v">${st.high}</div><div class="s">${st.over200} over 200</div></div>${(()=>{const b=bestSeriesOverall(games);return `<div class="tile"><div class="eyebrow">Best series</div><div class="v">${b?b.total:"—"}</div><div class="s">${b?esc(b.scores.join(" · "))+" on "+new Date(b.start).toLocaleDateString(undefined,new Date(b.start).getFullYear()===new Date().getFullYear()?{month:"short",day:"numeric"}:{month:"short",day:"numeric",year:"numeric"}):"3 games in one day"}</div></div>`;})()}
       <div class="tile"><div class="eyebrow">Strike rate</div><div class="v">${pf(st.strikes,st.strikeOpp)}<small>%</small></div><div class="s">${st.strikes} strikes</div></div>
       <div class="tile"><div class="eyebrow">Spare rate</div><div class="v">${pf(st.spares,st.spareOpp)}<small>%</small></div><div class="s">${st.spares} of ${st.spareOpp}</div></div>
       <div class="tile"><div class="eyebrow">Single-pin spares</div><div class="v">${pf(st.singlesMade,st.singles)}<small>%</small></div><div class="s">${st.singlesMade} of ${st.singles}</div></div>
-      <div class="tile"><div class="eyebrow">Clean game chance</div><div class="v">${(()=>{const c=cleanChance(st);return c==null?"—":chanceStr(c*100).replace("%","")+"<small>%</small>";})()}</div><div class="s">${(()=>{const c=cleanChance(st);return c?"about 1 in "+oneIn(1/c)+" games":"at your rates";})()}</div></div></div>`,
+      <div class="tile" style="grid-column:1/-1"><div class="eyebrow">Clean game chance</div><div class="v">${(()=>{const c=cleanChance(st);return c==null?"—":chanceStr(c*100).replace("%","")+"<small>%</small>";})()}</div><div class="s">${(()=>{const c=cleanChance(st);return c?"about 1 in "+oneIn(1/c)+" games":"at your rates";})()}</div></div></div>`,
     trend:`<div class="panel chart stack"><div class="eyebrow">Score trend</div>${trendChart(games)}</div>`,
     dist:`<div class="panel chart stack"><div class="eyebrow">Score distribution</div>${distChart(games)}</div>`,
     road300:perfectPanel(st),
     cleanodds:cleanPanel(st,games),
+    scoreset:scoreSetPanel(sample?SAMPLES:real),
     length:lengthPanel(games,sample?SAMPLES:real),
     finder:leaveFinder(sample?SAMPLES:real,sample?SAMPLES:real),
     shot:`<div class="panel stack"><div class="eyebrow">Shot making</div>
@@ -1355,6 +1393,8 @@ function editForm(g){
     <div class="row"><button class="btn sm primary" data-act="editsave" data-id="${g.id}">Save changes</button><button class="btn sm" data-act="editcancel">Cancel</button></div></div>`;
 }
 /* best total of three games in a row that day (a "series") */
+/* best 3 games in a row on the same day, across all days */
+function bestSeriesOverall(gs){let best=null;seriesOf(gs.slice().sort((a,b)=>a.start-b.start)).forEach(t=>{const sc=t.map(gameScore),tot=sc[0]+sc[1]+sc[2];if(!best||tot>best.total)best={total:tot,scores:sc,start:t[0].start};});return best;}
 function bestSeries(gs){const sc=gs.slice().sort((a,b)=>a.start-b.start).map(gameScore);if(sc.length<3)return null;let b=0;for(let i=0;i+2<sc.length;i++)b=Math.max(b,sc[i]+sc[i+1]+sc[i+2]);return b;}
 /* achievement badges for a game in History */
 function badgeCtx(pool){
@@ -1434,7 +1474,7 @@ function historyView(){
   const bctx=badgeCtx(pool);
   const row=g=>{const open=S.expanded===g.id,s=gameScore(g);
     return `<div class="hrow${g.noAvg?" noavg-row":""}"><button data-act="expand" data-id="${g.id}" aria-expanded="${open}"><div><b>Game ${gameOfDay(g,pool)}</b> <span class="muted">${[g.lane?"Lane "+esc(g.lane):"",new Date(g.start).toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"})].filter(Boolean).join(" · ")}</span> ${methodTag(g)}</div><div class="score">${rankChip(g,bctx)}<span class="sv" style="${s>=200&&!g.noAvg?"color:var(--accent)":""}">${s}${g.noAvg?'<span class="na">not in avg</span>':""}</span></div><div class="marks">${g.notes?'<span class="chip" style="font-size:11px;padding:0 6px;margin-right:6px">Notes</span>':""}${g.scoreOnly!=null?"Final score only":marksHtml(g.frames,g.brooklyn)}</div>${gameBadges(g,bctx)}</button>
-    ${open&&fv?`<div class="det">${card(g,-1)}${timingLine(g)}<div class="muted" style="font-size:14px">${esc(gameNote(g))}</div>${leavesLine(g)}${g.notes?`<div class="notes">${esc(g.notes)}</div>`:""}</div>`:open?`<div class="det">${S.editing===g.id?editForm(g):`${card(g,-1)}${timingLine(g)}<div class="muted" style="font-size:14px">${esc(gameNote(g))}</div>${leavesLine(g)}${g.notes?`<div class="notes">${esc(g.notes)}</div>`:""}<button class="btn sm" data-act="edit" data-id="${g.id}" style="align-self:flex-start">Edit game</button>`}${metaFields(g)}${S.confirm===g.id?`<div class="row"><span>Delete this game for good?</span><button class="btn sm danger" data-act="del-yes" data-id="${g.id}">Delete</button><button class="btn sm" data-act="confirm-no">Keep</button></div>`:`<button class="btn sm ghost danger" data-act="del" data-id="${g.id}" style="align-self:flex-start">Delete game</button>`}</div>`:""}</div>`;};
+    ${open&&fv?`<div class="det">${card(g,-1)}${timingLine(g)}<div class="muted" style="font-size:14px">${esc(gameNote(g))}</div>${leavesLine(g)}${rarityLine(g)}${g.notes?`<div class="notes">${esc(g.notes)}</div>`:""}</div>`:open?`<div class="det">${S.editing===g.id?editForm(g):`${card(g,-1)}${timingLine(g)}<div class="muted" style="font-size:14px">${esc(gameNote(g))}</div>${leavesLine(g)}${rarityLine(g)}${g.notes?`<div class="notes">${esc(g.notes)}</div>`:""}<button class="btn sm" data-act="edit" data-id="${g.id}" style="align-self:flex-start">Edit game</button>`}${metaFields(g)}${S.confirm===g.id?`<div class="row"><span>Delete this game for good?</span><button class="btn sm danger" data-act="del-yes" data-id="${g.id}">Delete</button><button class="btn sm" data-act="confirm-no">Keep</button></div>`:`<button class="btn sm ghost danger" data-act="del" data-id="${g.id}" style="align-self:flex-start">Delete game</button>`}</div>`:""}</div>`;};
   return `${whoBar()}${friendBanner()}<h2 style="font-family:var(--f-display);font-weight:400;font-size:24px">History <span class="muted num" style="font-family:var(--f-num);font-size:18px">${games.length} games · ${days.length} day${days.length===1?"":"s"}</span></h2><div class="hist">${days.map(d=>{
     const sc=d.games.map(gameScore),avs=d.games.filter(g=>!g.noAvg).map(gameScore),centers=[...new Set(d.games.map(g=>g.center).filter(Boolean))];
     const others=pool.filter(g=>isoDate(g.start)<d.k);
@@ -1488,6 +1528,7 @@ function settingsView(){
     <select id="set-recent" class="setsel">${RECENT_OPTS.map(([v,l])=>`<option value="${v}"${(st.recent||"g21")===v?" selected":""}>${l}</option>`).join("")}</select></label></div>
   <div class="panel stack"><div class="eyebrow">Bowling</div>
     <div class="setrow"><span><b>Start new games with</b><span class="muted">You can still switch for any game.</span></span>${seg("entry",[["pins","Tap pins"],["counts","Pin counts"],["score","Final score"]])}</div>
+    ${tog("laneFill","Start with your favorite lane","Fills in the favorite lane from your profile when you start bowling. Off means the lane box starts empty.")}
     ${tog("proj","Score projections","Highest possible, on pace for and at your average, under the scorecard.")}
     ${tog("awake","Keep screen on while bowling","Stops your phone from going to sleep between frames, where the browser allows it.")}</div>
   <p class="muted" style="margin:0;font-size:13px">Settings are saved on this device.</p>`;
@@ -1527,6 +1568,17 @@ function celebrate(pop){
 function closeCelebrate(){const el=document.getElementById("celebrate");if(el){el.hidden=true;el.innerHTML="";}clearTimeout(celebTimer);cancelAnimationFrame(celebRaf);}
 /* typing a pin count instead of tapping pins: the whole game (pin counts only), count mode switched on, or finishing a frame that was started by count */
 const countNow=(g,ns)=>!!(g.pinless||S.cmode||((g.pf||[]).includes(ns.fi)&&ns.ri>0));
+/* projection that knows the leave: your make rate for this exact leave (or leaves like it) against your usual spare rate */
+function leaveAdjust(g,ns,atAvg,mx){if(atAvg==null||ns.fresh||!ns.standing.length||g.pinless||countNow(g,ns))return null;
+  const st=computeStats(realDone().filter(x=>!x.noAvg));if(st.spareOpp<5)return null;
+  const p0=st.spares/st.spareOpp,li=leaveInfo(ns.standing),k=li.key,e=st.leaves[k],n=ns.standing.length;
+  let p,why;const nm=NAMES[k]?NAMES[k]+" ("+li.label+")":"the "+li.label;
+  if(e&&e.n>=3){p=e.made/e.n;why=`You make ${nm} ${pf(e.made,e.n)}% (${e.made} of ${e.n}) vs ${Math.round(p0*100)}% on all spares`;}
+  else if(li.split&&st.byPins.split&&st.byPins.split.n>=3){const b=st.byPins.split;p=b.made/b.n;why=`You make splits ${pf(b.made,b.n)}% vs ${Math.round(p0*100)}% on all spares`;}
+  else if(!li.split&&st.byN[n]&&st.byN[n].n>=3){const b=st.byN[n];p=b.made/b.n;why=`You make ${n}-pin spares ${pf(b.made,b.n)}% vs ${Math.round(p0*100)}% on all spares`;}
+  else return null;
+  const F=st.firstN?st.first/st.firstN:8,V=n*0.6+F;   /* make vs miss: about 60% of the leave plus your next first ball */
+  const d=Math.round((p-p0)*V),v=Math.max(0,Math.min(mx,atAvg+d));return {v,d:v-atAvg,why};}
 function calloutFor(g,before){
   const ann=annotate(g.frames);const fi=ann.length-1,rolls=ann[fi],o=rolls[rolls.length-1],nopins=g.pinless||(g.pf||[]).includes(fi);
   let run=0;const flatFresh=[];ann.forEach(r=>r.forEach(x=>{if(x.fresh)flatFresh.push(x.clear);}));
